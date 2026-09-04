@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué jugador de Boca sos?</title>
+<style>
+  :root{
+    --azul: #0a3d8f;
+    --azul-oscuro: #051f47;
+    --oro: #ffd400;
+    --oro-suave: #ffe680;
+    --crema: #f5f2e8;
+    --tinta: #0b1a33;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    background:
+      repeating-linear-gradient(135deg, var(--azul) 0 60px, var(--azul-oscuro) 60px 120px);
+    min-height:100vh;
+    color: var(--crema);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px 14px;
+  }
+  .stage{
+    width:100%;
+    max-width:560px;
+  }
+  .crest{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .crest-badge{
+    width:46px;height:46px;border-radius:50%;
+    background: var(--oro);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:900;color:var(--azul-oscuro);font-size:20px;
+    box-shadow: 0 0 0 4px var(--azul-oscuro), 0 4px 10px rgba(0,0,0,.4);
+  }
+  .crest-text{
+    font-size:14px;letter-spacing:2px;color:var(--oro-suave);
+    font-weight:700;
+  }
+  .panel{
+    background: var(--tinta);
+    border: 3px solid var(--oro);
+    border-radius: 18px;
+    padding: 32px 26px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; top:-40px; right:-40px;
+    width:140px;height:140px;border-radius:50%;
+    background: radial-gradient(circle, rgba(255,212,0,.18), transparent 70%);
+  }
+  h1{
+    font-size: 30px;
+    line-height:1.05;
+    margin: 0 0 10px;
+    font-weight:900;
+    letter-spacing:.5px;
+    color:#fff;
+  }
+  h1 span{color:var(--oro);}
+  .sub{
+    color:#c9d4ea;
+    font-size:15px;
+    line-height:1.5;
+    margin-bottom:24px;
+  }
+  .btn{
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    background: var(--oro);
+    color: var(--azul-oscuro);
+    border:none;
+    font-family:inherit;
+    font-weight:900;
+    font-size:17px;
+    letter-spacing:.5px;
+    padding:16px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .btn:hover{ background:#ffe45c; transform: translateY(-1px); }
+  .btn:active{ transform: translateY(1px); }
+  .btn-ghost{
+    background:transparent;
+    color: var(--oro);
+    border: 2px solid var(--oro);
+    margin-top:12px;
+  }
+  .btn-ghost:hover{ background: rgba(255,212,0,.1); }
+
+  /* progreso tipo marcador de cancha */
+  .scoreboard{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+    font-size:13px;
+    color:#c9d4ea;
+    font-weight:700;
+    letter-spacing:1px;
+  }
+  .track{
+    height:8px;
+    background: rgba(255,255,255,.12);
+    border-radius:6px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .fill{
+    height:100%;
+    background: var(--oro);
+    border-radius:6px;
+    transition: width .35s ease;
+  }
+  .question{
+    font-size:21px;
+    font-weight:800;
+    color:#fff;
+    line-height:1.3;
+    margin-bottom:22px;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .opt{
+    text-align:left;
+    background: rgba(255,255,255,.05);
+    border: 2px solid rgba(255,212,0,.35);
+    color: var(--crema);
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-family:inherit;
+    font-size:15.5px;
+    cursor:pointer;
+    transition: all .12s ease;
+  }
+  .opt:hover{
+    border-color: var(--oro);
+    background: rgba(255,212,0,.12);
+    transform: translateX(3px);
+  }
+
+  /* resultado */
+  .result-top{
+    text-align:center;
+  }
+  .jersey{
+    width:150px; height:150px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: repeating-linear-gradient(90deg, var(--azul) 0 14px, var(--oro-suave) 14px 16px, var(--azul) 16px 30px);
+    display:flex; align-items:center; justify-content:center;
+    border: 5px solid var(--oro);
+    position:relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  }
+  .jersey-num{
+    background: var(--azul-oscuro);
+    width:88px;height:88px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:36px;font-weight:900;color:var(--oro);
+    border: 3px solid rgba(255,255,255,.15);
+  }
+  .result-name{
+    font-size:26px;
+    font-weight:900;
+    color:#fff;
+    margin: 6px 0 2px;
+  }
+  .result-pos{
+    color: var(--oro);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:2px;
+    margin-bottom:16px;
+  }
+  .result-desc{
+    color:#dbe3f5;
+    font-size:15.5px;
+    line-height:1.55;
+    text-align:left;
+    background: rgba(255,255,255,.05);
+    border-left:3px solid var(--oro);
+    padding:14px 16px;
+    border-radius:8px;
+    margin-bottom:22px;
+  }
+  .hidden{display:none;}
+  @media (max-width:420px){
+    h1{font-size:25px;}
+    .question{font-size:18.5px;}
+    .panel{padding:26px 18px;}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="crest">
+    <div class="crest-badge">B</div>
+    <div class="crest-text">LA MITAD MÁS UNO — TEST XENEIZE</div>
+  </div>
+
+  <!-- PANTALLA INICIAL -->
+  <div class="panel" id="screen-start">
+    <h1>¿A qué jugador <span>actual de Boca</span> te parecés?</h1>
+    <p class="sub">
+      15 preguntas totalmente random para descubrir cuál del plantel de Boca
+      es tu doble de personalidad. No hay respuestas correctas, solo hay
+      respuestas de la Bombonera.
+    </p>
+    <button class="btn" onclick="startQuiz()">EMPEZAR EL TEST</button>
+  </div>
+
+  <!-- PANTALLA PREGUNTA -->
+  <div class="panel hidden" id="screen-quiz">
+    <div class="scoreboard">
+      <span id="q-counter">PREGUNTA 1/15</span>
+      <span>XENEIZE TEST</span>
+    </div>
+    <div class="track"><div class="fill" id="progress-fill" style="width:6.6%"></div></div>
+    <div class="question" id="q-text"></div>
+    <div class="options" id="q-options"></div>
+  </div>
+
+  <!-- PANTALLA RESULTADO -->
+  <div class="panel hidden" id="screen-result">
+    <div class="result-top">
+      <div class="jersey"><div class="jersey-num" id="r-number">10</div></div>
+      <div class="result-name" id="r-name">—</div>
+      <div class="result-pos" id="r-pos">—</div>
+    </div>
+    <div class="result-desc" id="r-desc"></div>
+    <button class="btn" onclick="restartQuiz()">JUGAR DE NUEVO</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   PLANTEL ACTUAL DE BOCA (con onda propia de personalidad)
+   tags usados para el matching: lider, tranquilo, loco, guerrero,
+   veterano, joven, gambeta, carisma, tactico, goleador, campeon
+========================================================== */
+const players = [
+  { name:"Agustín Marchesín", number:1, pos:"ARQUERO",
+    tags:["lider","tranquilo","veterano"],
+    desc:"Sos el que pone paz en el grupo de WhatsApp del laburo o la facu. Bajo presión, más tranquilo. Todos confían en vos cuando el ambiente se pone denso." },
+  { name:"Leandro Brey", number:12, pos:"ARQUERO",
+    tags:["joven","tranquilo"],
+    desc:"Sos la nueva promesa de tu círculo: todavía no la rompiste del todo pero se nota que venís con la calma y la confianza de quien sabe que le llega el momento." },
+  { name:"Javier García", number:13, pos:"ARQUERO",
+    tags:["veterano","tranquilo","lider"],
+    desc:"Sos el sabio del grupo, el que ya vio de todo y no se sorprende con nada. Das consejos aunque no te los pidan, y casi siempre tenés razón." },
+  { name:"Lautaro Di Lollo", number:2, pos:"DEFENSOR",
+    tags:["joven","guerrero"],
+    desc:"Sos de los que se tiran de cabeza a cualquier quilombo con tal de resolverlo. Entrega total, aunque a veces te falte un poco de roce." },
+  { name:"Lautaro Blanco", number:3, pos:"DEFENSOR",
+    tags:["gambeta","carisma"],
+    desc:"Sos el que sube por afuera cuando nadie lo espera. En los asados sos el que aparece con un chiste justo antes de que se ponga incómodo el silencio." },
+  { name:"Nicolás Figal", number:4, pos:"DEFENSOR",
+    tags:["veterano","lider","guerrero"],
+    desc:"Sos el que pone el cuerpo por los demás sin pedir nada a cambio. El amigo que te banca en el semestre difícil, sin drama, con hechos." },
+  { name:"Ayrton Costa", number:32, pos:"DEFENSOR",
+    tags:["guerrero","loco"],
+    desc:"Sos pura pasión y algo de descontrol. Te la jugás entera por lo que querés, aunque a veces se te vaya un poco la mano con la efusividad." },
+  { name:"Marco Pellegrino", number:26, pos:"DEFENSOR",
+    tags:["tactico","joven"],
+    desc:"Sos el que piensa dos pasos antes que el resto. Frío, calculador, casi nunca improvisás: tenés un plan para todo, incluso para el finde." },
+  { name:"Juan Barinaga", number:24, pos:"DEFENSOR",
+    tags:["joven","gambeta"],
+    desc:"Sos el que se anima a probar cosas nuevas sin miedo al ridículo. Recién arrancás pero ya tenés estilo propio." },
+  { name:"Marcelo Weigandt", number:23, pos:"DEFENSOR",
+    tags:["carisma","gambeta"],
+    desc:"Sos el alma de cualquier junta. Subís y bajás todo el tiempo, sos el que nunca se queda quieto y siempre suma onda al grupo." },
+  { name:"Malcom Braida", number:27, pos:"DEFENSOR/MEDIOCAMPISTA",
+    tags:["veterano","guerrero"],
+    desc:"Sos versátil: te adaptás a lo que haga falta, ya sea cubrir a un amigo, organizar el evento o bancar el fuerte. El comodín confiable de siempre." },
+  { name:"Leandro Paredes", number:5, pos:"MEDIOCAMPISTA",
+    tags:["lider","tactico","veterano","campeon"],
+    desc:"Sos el que maneja los tiempos de cualquier situación, con la tranquilidad de quien ya ganó algo importante en la vida y no necesita demostrar nada." },
+  { name:"Rodrigo Battaglia", number:6, pos:"MEDIOCAMPISTA",
+    tags:["veterano","tactico","guerrero"],
+    desc:"Sos el que corta todos los problemas antes de que exploten. Discreto, efectivo, el que hace el trabajo sucio para que los demás brillen." },
+  { name:"Santiago Ascacíbar", number:25, pos:"MEDIOCAMPISTA",
+    tags:["loco","guerrero","carisma"],
+    desc:"Sos intensidad pura las 24 horas. No hay término medio: o estás a mil discutiendo algo con pasión, o estás abrazando a todo el mundo." },
+  { name:"William Alarcón", number:15, pos:"MEDIOCAMPISTA",
+    tags:["tactico","tranquilo"],
+    desc:"Sos el que ordena sin hacer ruido. Nadie te aplaude pero sin vos el grupo se desarma; el equilibrio silencioso de cualquier plan." },
+  { name:"Milton Delgado", number:18, pos:"MEDIOCAMPISTA",
+    tags:["joven","gambeta"],
+    desc:"Sos la joven promesa que se anima a lo que sea. Tenés más confianza que experiencia, y justamente por eso te salen cosas que a otros no." },
+  { name:"Tomás Belmonte", number:30, pos:"MEDIOCAMPISTA",
+    tags:["tactico","tranquilo"],
+    desc:"Sos el que labura calladito, sin figurear, resolviendo el partido de fondo mientras otros se llevan los aplausos. Imprescindible y subestimado." },
+  { name:"Carlos Palacios", number:20, pos:"MEDIOCAMPISTA/EXTREMO",
+    tags:["gambeta","loco","carisma"],
+    desc:"Sos puro talento impredecible. Un día resolvés todo con una genialidad y al otro nadie sabe bien qué vas a hacer. Ahí está la gracia." },
+  { name:"Adam Bareiro", number:28, pos:"DELANTERO",
+    tags:["goleador","guerrero"],
+    desc:"Sos el que aparece justo cuando hace falta resolver algo. No sos el más vistoso del grupo, pero sos el que mete el gol cuando todo está complicado." },
+  { name:"Facundo Herrera", number:42, pos:"DEFENSOR",
+    tags:["joven","guerrero"],
+    desc:"Sos el más nuevo que ya se ganó el respeto a fuerza de laburo y entrega. Sin gritar mucho, vas construyendo tu lugar de a poco." }
+];
+
+/* =========================================================
+   15 PREGUNTAS RARAS / GRACIOSAS
+========================================================== */
+const questions = [
+  {
+    q: "Se corta la luz en medio de un asado familiar. ¿Qué hacés?",
+    options: [
+      { t:"Agarro el celu y hago de linterna para que el asador no la pifie", tags:["tactico","lider"] },
+      { t:"Sigo comiendo en la oscuridad como si nada, no es mi problema", tags:["tranquilo","veterano"] },
+      { t:"Salgo corriendo a buscar velas antes que nadie se dé cuenta", tags:["guerrero","joven"] },
+      { t:"Aprovecho la oscuridad para robarme el último choripán", tags:["loco","carisma"] }
+    ]
+  },
+  {
+    q: "Encontrás una araña gigante en tu pieza a las 3 de la mañana. Tu reacción:",
+    options: [
+      { t:"La encaro con un vaso y una revista, operación militar", tags:["guerrero","tactico"] },
+      { t:"Grito, despierto a toda la casa y pido refuerzos", tags:["carisma","loco"] },
+      { t:"La miro, respiro hondo y me voy a dormir a otro lado sin drama", tags:["tranquilo","veterano"] },
+      { t:"Le saco una foto para el grupo antes de hacer cualquier cosa", tags:["joven","gambeta"] }
+    ]
+  },
+  {
+    q: "Si fueras un corte de asado, ¿cuál serías?",
+    options: [
+      { t:"Vacío: sabroso, pero hay que saber cocinarme", tags:["carisma","gambeta"] },
+      { t:"Asado de tira: clásico, nunca falla, todos me quieren", tags:["lider","veterano"] },
+      { t:"Chinchulín: raro, discutido, pero al que lo banca lo banca fuerte", tags:["loco","carisma"] },
+      { t:"Bife de chorizo: directo, sin vueltas, cumplo siempre", tags:["guerrero","tactico"] }
+    ]
+  },
+  {
+    q: "Se cae el wifi en el momento exacto del gol del equipo. ¿Qué hacés?",
+    options: [
+      { t:"Reviso el router como si fuera cirujano, con calma y método", tags:["tactico","tranquilo"] },
+      { t:"Golpeo la pared y grito improperios al proveedor de internet", tags:["loco","guerrero"] },
+      { t:"Llamo a todo el grupo para que alguien me cuente qué pasó", tags:["carisma","joven"] },
+      { t:"Ya me acostumbré, ni me inmuto, total ya vi mil finales así", tags:["veterano","lider"] }
+    ]
+  },
+  {
+    q: "Ganás la lotería. Primera decisión:",
+    options: [
+      { t:"Invierto todo con un plan armado a 10 años", tags:["tactico","veterano"] },
+      { t:"Organizo un asado gigante para todos mis conocidos", tags:["carisma","lider"] },
+      { t:"Me compro algo totalmente absurdo que nadie esperaba", tags:["loco","gambeta"] },
+      { t:"Sigo laburando igual, no cambia nada en mi vida", tags:["tranquilo","guerrero"] }
+    ]
+  },
+  {
+    q: "Estás en la cola del banco hace 40 minutos. ¿Cómo reaccionás?",
+    options: [
+      { t:"Trabo amistad con el de adelante como si nos conociéramos de toda la vida", tags:["carisma","joven"] },
+      { t:"Calculo mentalmente cuánto tiempo perdí en la vida haciendo colas", tags:["tactico","veterano"] },
+      { t:"Empiezo a putear bajito pero no me voy ni loco", tags:["loco","guerrero"] },
+      { t:"Espero con total tranquilidad, ya sé cómo es esto", tags:["tranquilo","lider"] }
+    ]
+  },
+  {
+    q: "Te toca elegir la música en un viaje largo en auto. ¿Qué ponés?",
+    options: [
+      { t:"Una lista armada con anticipación, un tema para cada tramo", tags:["tactico","veterano"] },
+      { t:"Lo que pinte, cambio de género cada dos canciones", tags:["loco","gambeta"] },
+      { t:"Los clásicos de siempre que le gustan a todos", tags:["lider","carisma"] },
+      { t:"Algo under que nadie conoce, después lo escuchan todos", tags:["joven","gambeta"] }
+    ]
+  },
+  {
+    q: "En un picadito con amigos, ¿qué rol tomás sin que nadie te lo pida?",
+    options: [
+      { t:"El que arma los equipos y pone las reglas del partido", tags:["lider","tactico"] },
+      { t:"El que corre todo el partido aunque esté perdido 8 a 0", tags:["guerrero","joven"] },
+      { t:"El que hace jueguito en el arco esperando que le pasen la pelota", tags:["carisma","gambeta"] },
+      { t:"El que discute cada fallo del arbitro imaginario", tags:["loco","veterano"] }
+    ]
+  },
+  {
+    q: "Tu excusa favorita para llegar tarde a cualquier lado:",
+    options: [
+      { t:"\"Se me hizo largo el mate de la mañana\"", tags:["tranquilo","carisma"] },
+      { t:"No doy excusas, llego y listo, que se banquen", tags:["veterano","lider"] },
+      { t:"Una historia tan increíble que nadie la puede creer", tags:["loco","gambeta"] },
+      { t:"Llegué antes pero me quedé esperando afuera por las dudas", tags:["tactico","joven"] }
+    ]
+  },
+  {
+    q: "Si tuvieras que pelear contra un pato del tamaño de un caballo o cien patos normales, ¿qué elegís?",
+    options: [
+      { t:"El pato gigante, prefiero un solo enemigo grande y de frente", tags:["guerrero","lider"] },
+      { t:"Los cien patos, con estrategia y espalda los voy liquidando de a poco", tags:["tactico","veterano"] },
+      { t:"Ninguno, negocio la paz con los patos", tags:["tranquilo","carisma"] },
+      { t:"Cualquiera, me tiro de cabeza sin pensarlo ni un segundo", tags:["loco","joven"] }
+    ]
+  },
+  {
+    q: "Tu suegra (o la de tu pareja) te hace un comentario picante en la mesa. ¿Qué hacés?",
+    options: [
+      { t:"Le devuelvo el chiste con más filo todavía, con una sonrisa", tags:["carisma","loco"] },
+      { t:"Cambio de tema con una habilidad digna de diplomático", tags:["tactico","tranquilo"] },
+      { t:"Me quedo en silencio, ya libro esa batalla hace rato", tags:["veterano","guerrero"] },
+      { t:"Busco apoyo con la mirada al resto de la mesa", tags:["joven","lider"] }
+    ]
+  },
+  {
+    q: "Elegís tu arma para sobrevivir un apocalipsis zombie:",
+    options: [
+      { t:"Un plan de escape armado con anticipación y varias rutas alternativas", tags:["tactico","veterano"] },
+      { t:"Lo primero que encuentro, ya vemos sobre la marcha", tags:["loco","guerrero"] },
+      { t:"Organizo un grupo de supervivientes y me pongo al frente", tags:["lider","carisma"] },
+      { t:"Me escondo bien escondido y espero que pase todo tranquilo", tags:["tranquilo","joven"] }
+    ]
+  },
+  {
+    q: "¿Qué tipo de mate sos?",
+    options: [
+      { t:"Mate lavado, tranqui, para toda la charla larga sin apuro", tags:["tranquilo","veterano"] },
+      { t:"Mate quemado y amargo, directo al grano, sin vueltas", tags:["guerrero","lider"] },
+      { t:"Mate cocido con mucho azúcar, dulce con todos", tags:["carisma","joven"] },
+      { t:"Mate con yuyos raros que nadie pidió pero después le gusta a todos", tags:["loco","gambeta"] }
+    ]
+  },
+  {
+    q: "Aterriza un OVNI en tu barrio. ¿Cuál es tu primer movimiento?",
+    options: [
+      { t:"Grabo todo con el celular para el noticiero antes que nadie", tags:["joven","gambeta"] },
+      { t:"Organizo a los vecinos para investigar juntos, en equipo", tags:["lider","tactico"] },
+      { t:"Me acerco tranquilo a saludar, total ya vi de todo en la vida", tags:["veterano","tranquilo"] },
+      { t:"Le grito cosas al OVNI para que se note que no tengo miedo", tags:["loco","carisma"] }
+    ]
+  },
+  {
+    q: "Última pregunta: te ofrecen un solo deseo. ¿Qué pedís?",
+    options: [
+      { t:"Ganar un título grande junto a la gente que quiero", tags:["campeon","lider"] },
+      { t:"Que nunca se termine una buena juntada con amigos", tags:["carisma","gambeta"] },
+      { t:"Poder resolver cualquier drama con total calma, para siempre", tags:["tranquilo","tactico"] },
+      { t:"Tener la energía de los 20 años toda la vida", tags:["joven","guerrero"] }
+    ]
+  }
+];
+
+/* =========================================================
+   LÓGICA DEL QUIZ
+========================================================== */
+let current = 0;
+const scores = {}; // tag -> puntos acumulados
+
+function startQuiz(){
+  current = 0;
+  for (const k in scores) delete scores[k];
+  document.getElementById("screen-start").classList.add("hidden");
+  document.getElementById("screen-result").classList.add("hidden");
+  document.getElementById("screen-quiz").classList.remove("hidden");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const total = questions.length;
+  const item = questions[current];
+  document.getElementById("q-counter").textContent = `PREGUNTA ${current+1}/${total}`;
+  document.getElementById("progress-fill").style.width = `${((current+1)/total)*100}%`;
+  document.getElementById("q-text").textContent = item.q;
+
+  const wrap = document.getElementById("q-options");
+  wrap.innerHTML = "";
+  item.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.textContent = opt.t;
+    btn.onclick = () => answer(opt.tags);
+    wrap.appendChild(btn);
+  });
+}
+
+function answer(tags){
+  tags.forEach(t => { scores[t] = (scores[t] || 0) + 1; });
+  current++;
+  if (current < questions.length){
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  // calcular puntaje de cada jugador según sus tags
+  let best = null;
+  let bestScore = -1;
+  const ranked = players.map(p => {
+    const s = p.tags.reduce((acc,t) => acc + (scores[t] || 0), 0);
+    return { p, s };
+  });
+  ranked.sort((a,b) => b.s - a.s);
+  // desempate: entre los que están dentro de 1 punto del máximo, elegir aleatorio
+  const top = ranked[0].s;
+  const contenders = ranked.filter(r => r.s >= top - 0.001 && r.s === top);
+  const winner = contenders[Math.floor(Math.random()*contenders.length)].p;
+
+  document.getElementById("r-number").textContent = winner.number;
+  document.getElementById("r-name").textContent = winner.name;
+  document.getElementById("r-pos").textContent = winner.pos;
+  document.getElementById("r-desc").textContent = winner.desc;
+
+  document.getElementById("screen-quiz").classList.add("hidden");
+  document.getElementById("screen-result").classList.remove("hidden");
+}
+
+function restartQuiz(){
+  document.getElementById("screen-result").classList.add("hidden");
+  document.getElementById("screen-start").classList.remove("hidden");
+}
+</script>
+</body>
+</html>
