@@ -1,537 +1,251 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>¿Qué jugador de Boca sos?</title>
-<style>
-  :root{
-    --azul: #0a3d8f;
-    --azul-oscuro: #051f47;
-    --oro: #ffd400;
-    --oro-suave: #ffe680;
-    --crema: #f5f2e8;
-    --tinta: #0b1a33;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family: 'Arial Narrow', Arial, sans-serif;
-    background:
-      repeating-linear-gradient(135deg, var(--azul) 0 60px, var(--azul-oscuro) 60px 120px);
-    min-height:100vh;
-    color: var(--crema);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 24px 14px;
-  }
-  .stage{
-    width:100%;
-    max-width:560px;
-  }
-  .crest{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    margin-bottom:18px;
-  }
-  .crest-badge{
-    width:46px;height:46px;border-radius:50%;
-    background: var(--oro);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:900;color:var(--azul-oscuro);font-size:20px;
-    box-shadow: 0 0 0 4px var(--azul-oscuro), 0 4px 10px rgba(0,0,0,.4);
-  }
-  .crest-text{
-    font-size:14px;letter-spacing:2px;color:var(--oro-suave);
-    font-weight:700;
-  }
-  .panel{
-    background: var(--tinta);
-    border: 3px solid var(--oro);
-    border-radius: 18px;
-    padding: 32px 26px;
-    box-shadow: 0 20px 50px rgba(0,0,0,.45);
-    position:relative;
-    overflow:hidden;
-  }
-  .panel::before{
-    content:"";
-    position:absolute; top:-40px; right:-40px;
-    width:140px;height:140px;border-radius:50%;
-    background: radial-gradient(circle, rgba(255,212,0,.18), transparent 70%);
-  }
-  h1{
-    font-size: 30px;
-    line-height:1.05;
-    margin: 0 0 10px;
-    font-weight:900;
-    letter-spacing:.5px;
-    color:#fff;
-  }
-  h1 span{color:var(--oro);}
-  .sub{
-    color:#c9d4ea;
-    font-size:15px;
-    line-height:1.5;
-    margin-bottom:24px;
-  }
-  .btn{
-    display:inline-block;
-    width:100%;
-    text-align:center;
-    background: var(--oro);
-    color: var(--azul-oscuro);
-    border:none;
-    font-family:inherit;
-    font-weight:900;
-    font-size:17px;
-    letter-spacing:.5px;
-    padding:16px 18px;
-    border-radius:10px;
-    cursor:pointer;
-    transition: transform .12s ease, background .12s ease;
-  }
-  .btn:hover{ background:#ffe45c; transform: translateY(-1px); }
-  .btn:active{ transform: translateY(1px); }
-  .btn-ghost{
-    background:transparent;
-    color: var(--oro);
-    border: 2px solid var(--oro);
-    margin-top:12px;
-  }
-  .btn-ghost:hover{ background: rgba(255,212,0,.1); }
 
-  /* progreso tipo marcador de cancha */
-  .scoreboard{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-    font-size:13px;
-    color:#c9d4ea;
-    font-weight:700;
-    letter-spacing:1px;
-  }
-  .track{
-    height:8px;
-    background: rgba(255,255,255,.12);
-    border-radius:6px;
-    overflow:hidden;
-    margin-bottom:26px;
-  }
-  .fill{
-    height:100%;
-    background: var(--oro);
-    border-radius:6px;
-    transition: width .35s ease;
-  }
-  .question{
-    font-size:21px;
-    font-weight:800;
-    color:#fff;
-    line-height:1.3;
-    margin-bottom:22px;
-  }
-  .options{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .opt{
-    text-align:left;
-    background: rgba(255,255,255,.05);
-    border: 2px solid rgba(255,212,0,.35);
-    color: var(--crema);
-    padding: 14px 16px;
-    border-radius: 10px;
-    font-family:inherit;
-    font-size:15.5px;
-    cursor:pointer;
-    transition: all .12s ease;
-  }
-  .opt:hover{
-    border-color: var(--oro);
-    background: rgba(255,212,0,.12);
-    transform: translateX(3px);
-  }
+<html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Universo Xeneize — Juegos de Boca</title> <style> :root{ --azul: #0a3d8f; --azul-oscuro: #051f47; --oro: #ffd400; --oro-suave: #ffe680; --crema: #f5f2e8; --tinta: #0b1a33; } *{box-sizing:border-box;} html,body{margin:0;padding:0;} body{ font-family: 'Arial Narrow', Arial, sans-serif; background: repeating-linear-gradient(135deg, var(--azul) 0 60px, var(--azul-oscuro) 60px 120px); min-height:100vh; color: var(--crema); display:flex; align-items:center; justify-content:center; padding: 24px 14px; } .stage{ width:100%; max-width:560px; } .crest{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:18px; } .crest-badge{ width:46px;height:46px;border-radius:50%; background: var(--oro); display:flex;align-items:center;justify-content:center; font-weight:900;color:var(--azul-oscuro);font-size:20px; box-shadow: 0 0 0 4px var(--azul-oscuro), 0 4px 10px rgba(0,0,0,.4); } .crest-text{ font-size:13px;letter-spacing:2px;color:var(--oro-suave);font-weight:700; } .panel{ background: var(--tinta); border: 3px solid var(--oro); border-radius: 18px; padding: 32px 26px; box-shadow: 0 20px 50px rgba(0,0,0,.45); position:relative; overflow:hidden; } .panel::before{ content:""; position:absolute; top:-40px; right:-40px; width:140px;height:140px;border-radius:50%; background: radial-gradient(circle, rgba(255,212,0,.18), transparent 70%); } h1{ font-size: 28px; line-height:1.05; margin: 0 0 10px; font-weight:900; letter-spacing:.5px; color:#fff; } h1 span{color:var(--oro);} .sub{ color:#c9d4ea; font-size:14.5px; line-height:1.5; margin-bottom:20px; } .btn{ display:inline-block; width:100%; text-align:center; background: var(--oro); color: var(--azul-oscuro); border:none; font-family:inherit; font-weight:900; font-size:16px; letter-spacing:.5px; padding:15px 18px; border-radius:10px; cursor:pointer; transition: transform .12s ease, background .12s ease; } .btn:hover{ background:#ffe45c; transform: translateY(-1px); } .btn:active{ transform: translateY(1px); } .btn-ghost{ background:transparent; color: var(--oro); border: 2px solid var(--oro); margin-top:12px; } .btn-ghost:hover{ background: rgba(255,212,0,.1); }
 
-  /* resultado */
-  .result-top{
-    text-align:center;
-  }
-  .jersey{
-    width:150px; height:150px;
-    margin: 0 auto 18px;
-    border-radius: 50%;
-    background: repeating-linear-gradient(90deg, var(--azul) 0 14px, var(--oro-suave) 14px 16px, var(--azul) 16px 30px);
-    display:flex; align-items:center; justify-content:center;
-    border: 5px solid var(--oro);
-    position:relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,.4);
-  }
-  .jersey-num{
-    background: var(--azul-oscuro);
-    width:88px;height:88px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:36px;font-weight:900;color:var(--oro);
-    border: 3px solid rgba(255,255,255,.15);
-  }
-  .result-name{
-    font-size:26px;
-    font-weight:900;
-    color:#fff;
-    margin: 6px 0 2px;
-  }
-  .result-pos{
-    color: var(--oro);
-    font-weight:700;
-    font-size:13px;
-    letter-spacing:2px;
-    margin-bottom:16px;
-  }
-  .result-desc{
-    color:#dbe3f5;
-    font-size:15.5px;
-    line-height:1.55;
-    text-align:left;
-    background: rgba(255,255,255,.05);
-    border-left:3px solid var(--oro);
-    padding:14px 16px;
-    border-radius:8px;
-    margin-bottom:22px;
-  }
-  .hidden{display:none;}
-  @media (max-width:420px){
-    h1{font-size:25px;}
-    .question{font-size:18.5px;}
-    .panel{padding:26px 18px;}
-  }
+.scoreboard{ display; justify-content; align-items; margin-bottom:16px; font-size:12.5px; color:#c9d4ea; font-weight:700; letter-spacing:1px; }
+
+.track{ height:8px; background: rgba(255,255,255,.12); border-radius:6px; overflow; margin-bottom:24px; }
+
+.fill{ height:100%; background: var(--oro); border-radius:6px; transition: width .35s ease; }
+
+.question{ font-size:20px; font-weight:800; color:#fff; line-height:1.3; margin-bottom:20px; }
+
+.options{ display; flex-direction; gap:10px; }
+
+.opt{
+
+text-align; background: rgba(255,255,255,.05); border: 2px solid rgba(255,212,0,.35);
+
+color: var(--crema); padding: 14px 16px; border-radius: 10px; font-family;
+
+font-size:15px; cursor; transition: all .12s ease;
+
+}
+
+.opt{ border-color: var(--oro); background: rgba(255,212,0,.12); transform: translateX(3px); }
+
+.result-top{ text-align; }
+
+.jersey{
+
+width:140px; height:140px; margin: 0 auto 16px; border-radius: 50%;
+
+background: repeating-linear-gradient(90deg, var(--azul) 0 14px, var(--oro-suave) 14px 16px, var(--azul) 16px 30px);
+
+display; align-items; justify-content; border: 5px solid var(--oro);
+
+box-shadow: 0 10px 30px rgba(0,0,0,.4);
+
+}
+
+.jersey-num{
+
+background: var(--azul-oscuro); width:82px;height:82px;border-radius:50%;
+
+display;align-items;justify-content; font-size:32px;font-weight:900;color(--oro);
+
+border: 3px solid rgba(255,255,255,.15);
+
+}
+
+.result-name{ font-size:24px; font-weight:900; color:#fff; margin: 6px 0 2px; }
+
+.result-pos{ color: var(--oro); font-weight:700; font-size:12.5px; letter-spacing:2px; margin-bottom:14px; }
+
+.result-desc{
+
+color:#dbe3f5; font-size:14.5px; line-height:1.55; text-align;
+
+background: rgba(255,255,255,.05); border-left:3px solid var(--oro); padding:14px 16px; border-radius:8px; margin-bottom:20px;
+
+}
+
+.hidden{display;}
+
+/* ---- topbar / menu / puntos ---- */
+
+.topbar{ display; justify-content; align-items; margin-bottom:16px; font-size:12px; color:#c9d4ea; }
+
+.topbar button{ background; border:1px solid rgba(255,212,0,.5); color(--oro); border-radius:6px; padding:6px 10px; font-family; cursor; font-size:12px; }
+
+.pts{ color(--oro); font-weight:800; }
+
+.menu-grid{ display; grid-template-columns:1fr; gap:10px; margin-top:4px; margin-bottom:18px; }
+
+.game-card{
+
+background(255,255,255,.05); border:2px solid rgba(255,212,0,.35); border-radius:12px;
+
+padding:13px 16px; cursor; text-align; color(--crema); font-family;
+
+}
+
+.game-card{ border-color(--oro); background(255,212,0,.1); }
+
+.game-card b{ display; color:#fff; font-size:15.5px; margin-bottom:2px; }
+
+.game-card small{ color:#b9c6e3; }
+
+/* ---- adivinanza ---- */
+
+.avatar-guess{
+
+width:140px;height:140px;border-radius:50%;margin:0 auto 14px;
+
+background(90deg,var(--azul) 0 14px,var(--oro-suave) 14px 16px,var(--azul) 16px 30px);
+
+display;align-items;justify-content;border:5px solid var(--oro);
+
+filter(14px);transition .4s ease;
+
+}
+
+.avatar-guess.revealed{ filter(0); }
+
+.avatar-guess span{ background(--azul-oscuro); width:74px;height:74px;border-radius:50%; display;align-items;justify-content; font-size:26px; font-weight:900; color(--oro); }
+
+.hints{ display; flex-wrap; gap:8px; margin:12px 0; }
+
+.hint-btn{ flex:1 1 45%; background(255,255,255,.06); border:1px dashed rgba(255,212,0,.5); color:#dbe3f5; padding:9px; border-radius:8px; font-size:12px; cursor; font-family; }
+
+.hint-btn{ opacity:.45; cursor; }
+
+.guess-row{ display; gap:8px; margin-top:10px; }
+
+.guess-row input{ flex:1; padding:12px; border-radius:8px; border:2px solid rgba(255,212,0,.4); background(255,255,255,.05); color:#fff; font-family; font-size:15px; }
+
+.feedback{ margin-top:10px; font-size:13.5px; font-weight:700; min-height:18px; }
+
+.feedback.ok{ color:#7CFF9C; }
+
+.feedback.bad{ color:#ff8a8a; }
+
+/* ---- penales ---- */
+
+.power-wrap{ margin:16px 0; }
+
+.power-track{ position; height:16px; background(255,255,255,.1); border-radius:8px; overflow; border:1px solid rgba(255,212,0,.4); }
+
+.power-fill{ position; left:0; top:0; bottom:0; background(90deg,#4dff7a,var(--oro),#ff4d4d); width:100%; }
+
+.power-marker{ position; top:-6px; width:4px; height:28px; background:#fff; box-shadow:0 0 6px #000; left:0%; }
+
+.dir-grid{ display; grid-template-columns(5,1fr); gap:6px; margin:14px 0; }
+
+.dir-btn{ padding:14px 4px; font-size:19px; background(255,255,255,.05); border:2px solid rgba(255,212,0,.35); border-radius:8px; cursor; color:#fff; font-family; }
+
+.dir-btn.sel{ border-color(--oro); background(255,212,0,.18); }
+
+.score-strip{ text-align; font-size:19px; font-weight:900; color:#fff; margin:8px 0; }
+
+.kick-result{ text-align; font-size:38px; margin:10px 0; min-height:46px; }
+
+/* ---- equipo historico ---- */
+
+.pitch{ background(#0d5c2c,#0a4622); border:3px solid rgba(255,255,255,.3); border-radius:10px; padding:12px 6px; display; grid-template-rows(4,auto); gap:12px; margin-bottom:14px; }
+
+.pitch-row{ display; justify-content; flex-wrap; gap:4px; }
+
+.slot{ width:64px; min-height:52px; border:2px dashed rgba(255,255,255,.5); border-radius:8px; display; align-items; justify-content; font-size:9.5px; color:#fff; text-align; cursor; background(0,0,0,.15); padding:2px; line-height:1.1; }
+
+.slot.filled{ border-style; border-color(--oro); background(255,212,0,.18); font-weight:800; font-size:9.5px; }
+
+.roster{ display; flex-wrap; gap:7px; margin-bottom:14px; }
+
+.player-card{ background(255,255,255,.06); border:2px solid rgba(255,212,0,.35); border-radius:8px; padding:7px 9px; font-size:12px; cursor; color:#fff; font-family; }
+
+.player-card.used{ opacity:.3; pointer-events; }
+
+.player-card.sel{ border-color:#7CFF9C; background(124,255,156,.12); }
+
+.team-field label{ font-size:12px; color:#c9d4ea; display; margin-bottom:4px; }
+
+.team-field select{ width:100%; padding:9px; border-radius:6px; margin-bottom:10px; font-family; }
+
+/* ---- memotest ---- */
+
+.memo-stats{ display; justify-content; font-size:12.5px; color:#c9d4ea; margin-bottom:10px; }
+
+.memo-grid{ display; gap:7px; margin:10px 0 16px; }
+
+.memo-card{ aspect-ratio:1; background(--azul); border:2px solid var(--oro); border-radius:8px; display; align-items; justify-content; font-size:20px; cursor; }
+
+.memo-card.flipped, .memo-card.matched{ background(--oro-suave); color(--azul-oscuro); }
+
+.memo-card.matched{ opacity:.5; }
+
+/* ---- ranking ---- */
+
+.lead-table{ width:100%; border-collapse; font-size:13.5px; }
+
+.lead-table th{ color(--oro); text-align; padding:6px 4px; border-bottom:1px solid rgba(255,212,0,.3); font-size:10.5px; letter-spacing:1px; }
+
+.lead-table td{ padding:8px 4px; border-bottom:1px solid rgba(255,255,255,.06); }
+
+.lead-table tr.me{ background(255,212,0,.12); }
+
+@media (max-width:420px){
+
+h1{font-size:23px;} .question{font-size:17.5px;} .panel{padding:24px 16px;}
+
+.slot{width:54px;font-size:8.5px;} .dir-btn{font-size:16px;padding:12px 2px;}
+
+}
+
 </style>
-</head>
-<body>
-<div class="stage">
-  <div class="crest">
-    <div class="crest-badge">B</div>
-    <div class="crest-text">LA MITAD MÁS UNO — TEST XENEIZE</div>
-  </div>
 
-  <!-- PANTALLA INICIAL -->
-  <div class="panel" id="screen-start">
-    <h1>¿A qué jugador <span>actual de Boca</span> te parecés?</h1>
-    <p class="sub">
-      15 preguntas totalmente random para descubrir cuál del plantel de Boca
-      es tu doble de personalidad. No hay respuestas correctas, solo hay
-      respuestas de la Bombonera.
-    </p>
-    <button class="btn" onclick="startQuiz()">EMPEZAR EL TEST</button>
-  </div>
+</head> <body> <div class="stage"> <div class="crest"> <div class="crest-badge">B</div> <div class="crest-text">UNIVERSO XENEIZE — 6 JUEGOS</div> </div>
 
-  <!-- PANTALLA PREGUNTA -->
-  <div class="panel hidden" id="screen-quiz">
-    <div class="scoreboard">
-      <span id="q-counter">PREGUNTA 1/15</span>
-      <span>XENEIZE TEST</span>
-    </div>
-    <div class="track"><div class="fill" id="progress-fill" style="width:6.6%"></div></div>
-    <div class="question" id="q-text"></div>
-    <div class="options" id="q-options"></div>
-  </div>
+<!-- NOMBRE -->
 
-  <!-- PANTALLA RESULTADO -->
-  <div class="panel hidden" id="screen-result">
-    <div class="result-top">
-      <div class="jersey"><div class="jersey-num" id="r-number">10</div></div>
-      <div class="result-name" id="r-name">—</div>
-      <div class="result-pos" id="r-pos">—</div>
-    </div>
-    <div class="result-desc" id="r-desc"></div>
-    <button class="btn" onclick="restartQuiz()">JUGAR DE NUEVO</button>
-  </div>
+<div class="panel screen hidden" id="screen-name"> <h1>Bienvenido al <span>Universo Xeneize</span></h1> <p class="sub">Ingresá tu nombre o apodo para guardar tu puntaje y aparecer en el ranking global de todos los que jueguen.</p> <input id="name-input" type="text" maxlength="20" placeholder="Tu nombre o apodo" style="width:100%;padding:12px;border-radius:8px;border:2px solid rgba(255,212,0,.4);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;font-size:15px;margin-bottom:14px;" onkeydown="if(event.key==='Enter')saveName();"> <button class="btn" onclick="saveName()">ENTRAR</button> </div>
+
+<!-- MENU -->
+
+<div class="panel screen hidden" id="screen-home"> <div class="topbar"><span id="home-hello">¡Hola!</span><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1>Elegí tu <span>desafío</span></h1> <div class="menu-grid"> <button class="game-card" onclick="showScreen('screen-test-start')"><b>🔵🟡 ¿Qué jugador sos?</b><small>Test de personalidad con el plantel actual</small></button> <button class="game-card" onclick="startGuessGame()"><b>🧠 ¿Quién es el jugador?</b><small>Adivinanza con pistas — ídolos históricos</small></button> <button class="game-card" onclick="startPenales()"><b>⚽ Penal Xeneize</b><small>Tanda de penales contra River, con barra de potencia</small></button> <button class="game-card" onclick="startTeamBuilder()"><b>🏆 Armá el Boca histórico</b><small>Formá tu XI ideal con leyendas</small></button> <button class="game-card" onclick="showScreen('screen-memo')"><b>🔵🟡 Memotest Xeneize</b><small>Encontrá las parejas, elegí la dificultad</small></button> <button class="game-card" onclick="startTrivia()"><b>🗣️ ¿Quién dijo esto?</b><small>10 preguntas de historia boquense</small></button> </div> <button class="btn btn-ghost" onclick="showScreen('screen-ranking'); refreshRankingView();">🏆 Ver ranking global</button> </div>
+
+<!-- RANKING -->
+
+<div class="panel screen hidden" id="screen-ranking"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1 style="font-size:22px;">🏆 Ranking <span>Xeneize</span></h1> <p class="sub" id="ranking-note">Ranking global en vivo entre todos los que jueguen.</p> <table class="lead-table"> <thead><tr><th>#</th><th>Jugador</th><th>Puntos</th></tr></thead> <tbody id="ranking-body"><tr><td colspan="3">Cargando…</td></tr></tbody> </table> </div>
+
+<!-- TEST DE PERSONALIDAD -->
+
+<div class="panel screen hidden" id="screen-test-start"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1>¿A qué jugador <span>actual de Boca</span> te parecés?</h1> <p class="sub">15 preguntas totalmente random para descubrir cuál del plantel de Boca es tu doble de personalidad.</p> <button class="btn" onclick="startQuiz()">EMPEZAR EL TEST</button> </div>
+
+<div class="panel screen hidden" id="screen-test-quiz"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <div class="scoreboard"><span id="q-counter">PREGUNTA 1/15</span><span>TEST XENEIZE</span></div> <div class="track"><div class="fill" id="progress-fill" style="width:6.6%"></div></div> <div class="question" id="q-text"></div> <div class="options" id="q-options"></div> </div>
+
+<div class="panel screen hidden" id="screen-test-result"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <div class="result-top"> <div class="jersey"><div class="jersey-num" id="r-number">10</div></div> <div class="result-name" id="r-name">—</div> <div class="result-pos" id="r-pos">—</div> </div> <div class="result-desc" id="r-desc"></div> <button class="btn" onclick="startQuiz()">JUGAR DE NUEVO</button> </div>
+
+<!-- ADIVINANZA -->
+
+<div class="panel screen hidden" id="screen-guess"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1 style="font-size:21px;">🧠 ¿Quién es el <span>jugador</span>?</h1> <div class="avatar-guess" id="guess-avatar"><span id="guess-avatar-init">?</span></div> <div style="text-align:center;font-size:12.5px;color:#c9d4ea;margin-bottom:4px;">Intentos restantes: <b id="guess-tries">5</b></div> <div class="hints"> <button class="hint-btn" onclick="pedirPista('pos',this)">⚽ Pista: posición</button> <button class="hint-btn" onclick="pedirPista('nat',this)">🌎 Pista: nacionalidad</button> <button class="hint-btn" onclick="pedirPista('years',this)">🔵🟡 Pista: años en Boca</button> <button class="hint-btn" onclick="pedirPista('club',this)">🔁 Pista: otro club</button> </div> <div id="guess-hints-list"></div> <div class="guess-row"> <input id="guess-input" type="text" placeholder="Escribí el nombre..." onkeydown="if(event.key==='Enter')intentarAdivinar();"> <button class="btn" style="width:auto;" onclick="intentarAdivinar()">Adivinar</button> </div> <div id="guess-feedback" class="feedback"></div> <div id="guess-result-card" class="result-desc hidden" style="margin-top:12px;"></div> <button class="btn btn-ghost" onclick="startGuessGame()">🔄 Otro jugador</button> </div>
+
+<!-- PENALES -->
+
+<div class="panel screen hidden" id="screen-penal"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1 style="font-size:21px;">⚽ Penal <span>Xeneize</span></h1> <div class="score-strip" id="penal-score">BOCA 0 - 0 RIVER</div> <div style="text-align:center;font-size:12px;color:#c9d4ea;margin-bottom:8px;" id="penal-round">Ronda 1/5</div> <div style="text-align:center;font-weight:800;margin-bottom:4px;" id="penal-turn">🔵🟡 Pateás vos</div> <div class="kick-result" id="kick-result"></div> <div class="dir-grid" id="penal-dirs"> <button class="dir-btn" onclick="chooseDir('arriba-izq',this)">↖️</button> <button class="dir-btn" onclick="chooseDir('izq',this)">⬅️</button> <button class="dir-btn" onclick="chooseDir('centro',this)">🎯</button> <button class="dir-btn" onclick="chooseDir('derecha',this)">➡️</button> <button class="dir-btn" onclick="chooseDir('arriba-der',this)">↗️</button> </div> <div class="power-wrap hidden" id="penal-power-wrap"> <div style="font-size:11.5px;color:#c9d4ea;margin-bottom:4px;">Tocá "PATEAR" cuando la línea blanca esté en el dorado (el centro)</div> <div class="power-track"><div class="power-fill"></div><div class="power-marker" id="power-marker"></div></div> <button class="btn" style="margin-top:10px;" onclick="golpearBoca()">PATEAR</button> </div> <div id="penal-result" class="result-desc hidden"></div> <div id="penal-log" style="margin-top:8px;max-height:110px;overflow:auto;font-size:12.5px;"></div> <button class="btn btn-ghost" onclick="startPenales()">🔄 Jugar de nuevo</button> </div>
+
+<!-- EQUIPO HISTORICO -->
+
+<div class="panel screen hidden" id="screen-team"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1 style="font-size:21px;">🏆 Armá el <span>Boca histórico</span></h1> <p class="sub">Tocá un jugador de la lista y después una posición de la cancha para ubicarlo. Tocá una posición ocupada para sacarlo.</p> <div class="pitch" id="pitch"></div> <div class="roster" id="roster"></div> <div class="team-field"> <label>Capitán</label> <select id="team-cap"></select> <label>Ídolo elegido</label> <select id="team-idolo"></select> </div> <button class="btn" onclick="finalizarEquipo()">Terminar equipo</button> <div id="team-summary" class="result-desc hidden" style="margin-top:12px;"></div> </div>
+
+<!-- MEMOTEST -->
+
+<div class="panel screen hidden" id="screen-memo"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1 style="font-size:21px;">🔵🟡 Memotest <span>Xeneize</span></h1> <div style="display:flex;gap:8px;margin-bottom:12px;"> <button class="btn" style="width:auto;flex:1;font-size:12.5px;padding:10px 4px;" onclick="startMemo('facil')">Fácil (8)</button> <button class="btn" style="width:auto;flex:1;font-size:12.5px;padding:10px 4px;" onclick="startMemo('medio')">Medio (16)</button> <button class="btn" style="width:auto;flex:1;font-size:12.5px;padding:10px 4px;" onclick="startMemo('dificil')">Difícil (24)</button> </div> <div class="memo-stats"><span>⏱️ <span id="memo-time">00:00</span></span><span>Movs: <span id="memo-moves">0</span></span><span>Parejas: <span id="memo-pairs">0/0</span></span></div> <div class="memo-grid" id="memo-grid"></div> <div id="memo-result" class="result-desc hidden"></div> </div>
+
+<!-- TRIVIA FRASES -->
+
+<div class="panel screen hidden" id="screen-trivia"> <div class="topbar"><button onclick="showScreen('screen-home')">← Menú</button><span>Puntos: <span class="pts pts-value">0</span></span></div> <h1 style="font-size:21px;">🗣️ ¿De qué jugador <span>es esto?</span></h1> <div class="scoreboard"><span id="trivia-counter">Pregunta 1/10</span><span>HISTORIA XENEIZE</span></div> <div class="question" id="trivia-frase" style="font-size:16px;font-style:italic;"></div> <div class="options" id="trivia-options"></div> <div id="trivia-feedback" class="feedback" style="margin-top:8px;"></div> <div id="trivia-result" class="result-desc hidden" style="margin-top:12px;"></div> <button class="btn btn-ghost" onclick="startTrivia()">🔄 Jugar de nuevo</button> </div>
+
 </div>
 
-<script>
-/* =========================================================
-   PLANTEL ACTUAL DE BOCA (con onda propia de personalidad)
-   tags usados para el matching: lider, tranquilo, loco, guerrero,
-   veterano, joven, gambeta, carisma, tactico, goleador, campeon
-========================================================== */
-const players = [
-  { name:"Agustín Marchesín", number:1, pos:"ARQUERO",
-    tags:["lider","tranquilo","veterano"],
-    desc:"Sos el que pone paz en el grupo de WhatsApp del laburo o la facu. Bajo presión, más tranquilo. Todos confían en vos cuando el ambiente se pone denso." },
-  { name:"Leandro Brey", number:12, pos:"ARQUERO",
-    tags:["joven","tranquilo"],
-    desc:"Sos la nueva promesa de tu círculo: todavía no la rompiste del todo pero se nota que venís con la calma y la confianza de quien sabe que le llega el momento." },
-  { name:"Javier García", number:13, pos:"ARQUERO",
-    tags:["veterano","tranquilo","lider"],
-    desc:"Sos el sabio del grupo, el que ya vio de todo y no se sorprende con nada. Das consejos aunque no te los pidan, y casi siempre tenés razón." },
-  { name:"Lautaro Di Lollo", number:2, pos:"DEFENSOR",
-    tags:["joven","guerrero"],
-    desc:"Sos de los que se tiran de cabeza a cualquier quilombo con tal de resolverlo. Entrega total, aunque a veces te falte un poco de roce." },
-  { name:"Lautaro Blanco", number:3, pos:"DEFENSOR",
-    tags:["gambeta","carisma"],
-    desc:"Sos el que sube por afuera cuando nadie lo espera. En los asados sos el que aparece con un chiste justo antes de que se ponga incómodo el silencio." },
-  { name:"Nicolás Figal", number:4, pos:"DEFENSOR",
-    tags:["veterano","lider","guerrero"],
-    desc:"Sos el que pone el cuerpo por los demás sin pedir nada a cambio. El amigo que te banca en el semestre difícil, sin drama, con hechos." },
-  { name:"Ayrton Costa", number:32, pos:"DEFENSOR",
-    tags:["guerrero","loco"],
-    desc:"Sos pura pasión y algo de descontrol. Te la jugás entera por lo que querés, aunque a veces se te vaya un poco la mano con la efusividad." },
-  { name:"Marco Pellegrino", number:26, pos:"DEFENSOR",
-    tags:["tactico","joven"],
-    desc:"Sos el que piensa dos pasos antes que el resto. Frío, calculador, casi nunca improvisás: tenés un plan para todo, incluso para el finde." },
-  { name:"Juan Barinaga", number:24, pos:"DEFENSOR",
-    tags:["joven","gambeta"],
-    desc:"Sos el que se anima a probar cosas nuevas sin miedo al ridículo. Recién arrancás pero ya tenés estilo propio." },
-  { name:"Marcelo Weigandt", number:23, pos:"DEFENSOR",
-    tags:["carisma","gambeta"],
-    desc:"Sos el alma de cualquier junta. Subís y bajás todo el tiempo, sos el que nunca se queda quieto y siempre suma onda al grupo." },
-  { name:"Malcom Braida", number:27, pos:"DEFENSOR/MEDIOCAMPISTA",
-    tags:["veterano","guerrero"],
-    desc:"Sos versátil: te adaptás a lo que haga falta, ya sea cubrir a un amigo, organizar el evento o bancar el fuerte. El comodín confiable de siempre." },
-  { name:"Leandro Paredes", number:5, pos:"MEDIOCAMPISTA",
-    tags:["lider","tactico","veterano","campeon"],
-    desc:"Sos el que maneja los tiempos de cualquier situación, con la tranquilidad de quien ya ganó algo importante en la vida y no necesita demostrar nada." },
-  { name:"Rodrigo Battaglia", number:6, pos:"MEDIOCAMPISTA",
-    tags:["veterano","tactico","guerrero"],
-    desc:"Sos el que corta todos los problemas antes de que exploten. Discreto, efectivo, el que hace el trabajo sucio para que los demás brillen." },
-  { name:"Santiago Ascacíbar", number:25, pos:"MEDIOCAMPISTA",
-    tags:["loco","guerrero","carisma"],
-    desc:"Sos intensidad pura las 24 horas. No hay término medio: o estás a mil discutiendo algo con pasión, o estás abrazando a todo el mundo." },
-  { name:"William Alarcón", number:15, pos:"MEDIOCAMPISTA",
-    tags:["tactico","tranquilo"],
-    desc:"Sos el que ordena sin hacer ruido. Nadie te aplaude pero sin vos el grupo se desarma; el equilibrio silencioso de cualquier plan." },
-  { name:"Milton Delgado", number:18, pos:"MEDIOCAMPISTA",
-    tags:["joven","gambeta"],
-    desc:"Sos la joven promesa que se anima a lo que sea. Tenés más confianza que experiencia, y justamente por eso te salen cosas que a otros no." },
-  { name:"Tomás Belmonte", number:30, pos:"MEDIOCAMPISTA",
-    tags:["tactico","tranquilo"],
-    desc:"Sos el que labura calladito, sin figurear, resolviendo el partido de fondo mientras otros se llevan los aplausos. Imprescindible y subestimado." },
-  { name:"Carlos Palacios", number:20, pos:"MEDIOCAMPISTA/EXTREMO",
-    tags:["gambeta","loco","carisma"],
-    desc:"Sos puro talento impredecible. Un día resolvés todo con una genialidad y al otro nadie sabe bien qué vas a hacer. Ahí está la gracia." },
-  { name:"Adam Bareiro", number:28, pos:"DELANTERO",
-    tags:["goleador","guerrero"],
-    desc:"Sos el que aparece justo cuando hace falta resolver algo. No sos el más vistoso del grupo, pero sos el que mete el gol cuando todo está complicado." },
-  { name:"Facundo Herrera", number:42, pos:"DEFENSOR",
-    tags:["joven","guerrero"],
-    desc:"Sos el más nuevo que ya se ganó el respeto a fuerza de laburo y entrega. Sin gritar mucho, vas construyendo tu lugar de a poco." }
-];
+<!-- Firebase (completar configuración abajo en el script) -->
 
-/* =========================================================
-   15 PREGUNTAS RARAS / GRACIOSAS
-========================================================== */
-const questions = [
-  {
-    q: "Se corta la luz en medio de un asado familiar. ¿Qué hacés?",
-    options: [
-      { t:"Agarro el celu y hago de linterna para que el asador no la pifie", tags:["tactico","lider"] },
-      { t:"Sigo comiendo en la oscuridad como si nada, no es mi problema", tags:["tranquilo","veterano"] },
-      { t:"Salgo corriendo a buscar velas antes que nadie se dé cuenta", tags:["guerrero","joven"] },
-      { t:"Aprovecho la oscuridad para robarme el último choripán", tags:["loco","carisma"] }
-    ]
-  },
-  {
-    q: "Encontrás una araña gigante en tu pieza a las 3 de la mañana. Tu reacción:",
-    options: [
-      { t:"La encaro con un vaso y una revista, operación militar", tags:["guerrero","tactico"] },
-      { t:"Grito, despierto a toda la casa y pido refuerzos", tags:["carisma","loco"] },
-      { t:"La miro, respiro hondo y me voy a dormir a otro lado sin drama", tags:["tranquilo","veterano"] },
-      { t:"Le saco una foto para el grupo antes de hacer cualquier cosa", tags:["joven","gambeta"] }
-    ]
-  },
-  {
-    q: "Si fueras un corte de asado, ¿cuál serías?",
-    options: [
-      { t:"Vacío: sabroso, pero hay que saber cocinarme", tags:["carisma","gambeta"] },
-      { t:"Asado de tira: clásico, nunca falla, todos me quieren", tags:["lider","veterano"] },
-      { t:"Chinchulín: raro, discutido, pero al que lo banca lo banca fuerte", tags:["loco","carisma"] },
-      { t:"Bife de chorizo: directo, sin vueltas, cumplo siempre", tags:["guerrero","tactico"] }
-    ]
-  },
-  {
-    q: "Se cae el wifi en el momento exacto del gol del equipo. ¿Qué hacés?",
-    options: [
-      { t:"Reviso el router como si fuera cirujano, con calma y método", tags:["tactico","tranquilo"] },
-      { t:"Golpeo la pared y grito improperios al proveedor de internet", tags:["loco","guerrero"] },
-      { t:"Llamo a todo el grupo para que alguien me cuente qué pasó", tags:["carisma","joven"] },
-      { t:"Ya me acostumbré, ni me inmuto, total ya vi mil finales así", tags:["veterano","lider"] }
-    ]
-  },
-  {
-    q: "Ganás la lotería. Primera decisión:",
-    options: [
-      { t:"Invierto todo con un plan armado a 10 años", tags:["tactico","veterano"] },
-      { t:"Organizo un asado gigante para todos mis conocidos", tags:["carisma","lider"] },
-      { t:"Me compro algo totalmente absurdo que nadie esperaba", tags:["loco","gambeta"] },
-      { t:"Sigo laburando igual, no cambia nada en mi vida", tags:["tranquilo","guerrero"] }
-    ]
-  },
-  {
-    q: "Estás en la cola del banco hace 40 minutos. ¿Cómo reaccionás?",
-    options: [
-      { t:"Trabo amistad con el de adelante como si nos conociéramos de toda la vida", tags:["carisma","joven"] },
-      { t:"Calculo mentalmente cuánto tiempo perdí en la vida haciendo colas", tags:["tactico","veterano"] },
-      { t:"Empiezo a putear bajito pero no me voy ni loco", tags:["loco","guerrero"] },
-      { t:"Espero con total tranquilidad, ya sé cómo es esto", tags:["tranquilo","lider"] }
-    ]
-  },
-  {
-    q: "Te toca elegir la música en un viaje largo en auto. ¿Qué ponés?",
-    options: [
-      { t:"Una lista armada con anticipación, un tema para cada tramo", tags:["tactico","veterano"] },
-      { t:"Lo que pinte, cambio de género cada dos canciones", tags:["loco","gambeta"] },
-      { t:"Los clásicos de siempre que le gustan a todos", tags:["lider","carisma"] },
-      { t:"Algo under que nadie conoce, después lo escuchan todos", tags:["joven","gambeta"] }
-    ]
-  },
-  {
-    q: "En un picadito con amigos, ¿qué rol tomás sin que nadie te lo pida?",
-    options: [
-      { t:"El que arma los equipos y pone las reglas del partido", tags:["lider","tactico"] },
-      { t:"El que corre todo el partido aunque esté perdido 8 a 0", tags:["guerrero","joven"] },
-      { t:"El que hace jueguito en el arco esperando que le pasen la pelota", tags:["carisma","gambeta"] },
-      { t:"El que discute cada fallo del arbitro imaginario", tags:["loco","veterano"] }
-    ]
-  },
-  {
-    q: "Tu excusa favorita para llegar tarde a cualquier lado:",
-    options: [
-      { t:"\"Se me hizo largo el mate de la mañana\"", tags:["tranquilo","carisma"] },
-      { t:"No doy excusas, llego y listo, que se banquen", tags:["veterano","lider"] },
-      { t:"Una historia tan increíble que nadie la puede creer", tags:["loco","gambeta"] },
-      { t:"Llegué antes pero me quedé esperando afuera por las dudas", tags:["tactico","joven"] }
-    ]
-  },
-  {
-    q: "Si tuvieras que pelear contra un pato del tamaño de un caballo o cien patos normales, ¿qué elegís?",
-    options: [
-      { t:"El pato gigante, prefiero un solo enemigo grande y de frente", tags:["guerrero","lider"] },
-      { t:"Los cien patos, con estrategia y espalda los voy liquidando de a poco", tags:["tactico","veterano"] },
-      { t:"Ninguno, negocio la paz con los patos", tags:["tranquilo","carisma"] },
-      { t:"Cualquiera, me tiro de cabeza sin pensarlo ni un segundo", tags:["loco","joven"] }
-    ]
-  },
-  {
-    q: "Tu suegra (o la de tu pareja) te hace un comentario picante en la mesa. ¿Qué hacés?",
-    options: [
-      { t:"Le devuelvo el chiste con más filo todavía, con una sonrisa", tags:["carisma","loco"] },
-      { t:"Cambio de tema con una habilidad digna de diplomático", tags:["tactico","tranquilo"] },
-      { t:"Me quedo en silencio, ya libro esa batalla hace rato", tags:["veterano","guerrero"] },
-      { t:"Busco apoyo con la mirada al resto de la mesa", tags:["joven","lider"] }
-    ]
-  },
-  {
-    q: "Elegís tu arma para sobrevivir un apocalipsis zombie:",
-    options: [
-      { t:"Un plan de escape armado con anticipación y varias rutas alternativas", tags:["tactico","veterano"] },
-      { t:"Lo primero que encuentro, ya vemos sobre la marcha", tags:["loco","guerrero"] },
-      { t:"Organizo un grupo de supervivientes y me pongo al frente", tags:["lider","carisma"] },
-      { t:"Me escondo bien escondido y espero que pase todo tranquilo", tags:["tranquilo","joven"] }
-    ]
-  },
-  {
-    q: "¿Qué tipo de mate sos?",
-    options: [
-      { t:"Mate lavado, tranqui, para toda la charla larga sin apuro", tags:["tranquilo","veterano"] },
-      { t:"Mate quemado y amargo, directo al grano, sin vueltas", tags:["guerrero","lider"] },
-      { t:"Mate cocido con mucho azúcar, dulce con todos", tags:["carisma","joven"] },
-      { t:"Mate con yuyos raros que nadie pidió pero después le gusta a todos", tags:["loco","gambeta"] }
-    ]
-  },
-  {
-    q: "Aterriza un OVNI en tu barrio. ¿Cuál es tu primer movimiento?",
-    options: [
-      { t:"Grabo todo con el celular para el noticiero antes que nadie", tags:["joven","gambeta"] },
-      { t:"Organizo a los vecinos para investigar juntos, en equipo", tags:["lider","tactico"] },
-      { t:"Me acerco tranquilo a saludar, total ya vi de todo en la vida", tags:["veterano","tranquilo"] },
-      { t:"Le grito cosas al OVNI para que se note que no tengo miedo", tags:["loco","carisma"] }
-    ]
-  },
-  {
-    q: "Última pregunta: te ofrecen un solo deseo. ¿Qué pedís?",
-    options: [
-      { t:"Ganar un título grande junto a la gente que quiero", tags:["campeon","lider"] },
-      { t:"Que nunca se termine una buena juntada con amigos", tags:["carisma","gambeta"] },
-      { t:"Poder resolver cualquier drama con total calma, para siempre", tags:["tranquilo","tactico"] },
-      { t:"Tener la energía de los 20 años toda la vida", tags:["joven","guerrero"] }
-    ]
-  }
-];
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 
-/* =========================================================
-   LÓGICA DEL QUIZ
-========================================================== */
-let current = 0;
-const scores = {}; // tag -> puntos acumulados
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 
-function startQuiz(){
-  current = 0;
-  for (const k in scores) delete scores[k];
-  document.getElementById("screen-start").classList.add("hidden");
-  document.getElementById("screen-result").classList.add("hidden");
-  document.getElementById("screen-quiz").classList.remove("hidden");
-  renderQuestion();
-}
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 
-function renderQuestion(){
-  const total = questions.length;
-  const item = questions[current];
-  document.getElementById("q-counter").textContent = `PREGUNTA ${current+1}/${total}`;
-  document.getElementById("progress-fill").style.width = `${((current+1)/total)*100}%`;
-  document.getElementById("q-text").textContent = item.q;
+<script> /* ========================================================= CONFIGURACIÓN DE FIREBASE — REEMPLAZAR CON TUS DATOS (Project settings > General > Tus apps > Config del SDK) ========================================================== */ const firebaseConfig = { apiKey: "TU_API_KEY", authDomain: "TU_PROYECTO.firebaseapp.com", projectId: "TU_PROYECTO", storageBucket: "TU_PROYECTO.appspot.com", messagingSenderId: "TU_SENDER_ID", appId: "TU_APP_ID" }; /* ========================================================= NAVEGACIÓN GENERAL ========================================================== */ function showScreen(id){ document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); } /* ========================================================= NOMBRE / PUNTOS / FIREBASE / RANKING ========================================================== */ let userName = localStorage.getItem('boca_name') || ''; let totalPoints = parseInt(localStorage.getItem('boca_points') || '0', 10); let fbReady = false, db = null, auth = null, uid = null; function updatePointsBadge(){ document.querySelectorAll('.pts-value').forEach(el => el.textContent = totalPoints); } function saveName(){ const v = document.getElementById('name-input').value.trim(); if(!v) return; userName = v; localStorage.setItem('boca_name', v); document.getElementById('home-hello').textContent = 'Hola, ' + userName + '!'; showScreen('screen-home'); initFirebase(); } function initFirebase(){ if(fbReady) return; if(typeof firebase === 'undefined' || !firebaseConfig.apiKey || firebaseConfig.apiKey.indexOf('TU_') === 0){ return; // no configurado todavía } try{ if(!firebase.apps.length) firebase.initializeApp(firebaseConfig); auth = firebase.auth(); db = firebase.firestore(); auth.signInAnonymously().then(() => { uid = auth.currentUser.uid; fbReady = true; db.collection('ranking').doc(uid).set({ name: userName, totalPoints: totalPoints, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); listenRanking(); }).catch(err => console.error('Firebase auth error:', err)); }catch(e){ console.error('Firebase init error:', e); } } function sumarPuntos(juego, puntos){ if(puntos <= 0) return; totalPoints += puntos; localStorage.setItem('boca_points', totalPoints); updatePointsBadge(); if(fbReady && db && uid){ const update = { name: userName, totalPoints: firebase.firestore.FieldValue.increment(puntos), updatedAt: firebase.firestore.FieldValue.serverTimestamp() }; update['juego_' + juego] = firebase.firestore.FieldValue.increment(puntos); db.collection('ranking').doc(uid).set(update, { merge: true }); } } function listenRanking(){ if(!db) return; db.collection('ranking').orderBy('totalPoints', 'desc').limit(50) .onSnapshot(snap => { const rows = []; snap.forEach(doc => rows.push({ id: doc.id, ...doc.data() })); renderRanking(rows); }, err => console.error('Ranking listen error:', err)); } function renderRanking(rows){ const tbody = document.getElementById('ranking-body'); if(!tbody) return; if(!rows.length){ tbody.innerHTML = '<tr><td colspan="3">Todavía no hay puntajes. ¡Sé el primero!</td></tr>'; return; } tbody.innerHTML = rows.map((r,i) => `<tr class="${r.id===uid?'me':''}"><td>${i+1}</td><td>${escapeHtml(r.name||'Anónimo')}</td><td>${r.totalPoints||0}</td></tr>` ).join(''); } function refreshRankingView(){ const note = document.getElementById('ranking-note'); if(!fbReady){ note.textContent = 'El ranking global todavía no está conectado a Firebase. Mientras tanto, este es tu puntaje local.'; document.getElementById('ranking-body').innerHTML = `<tr class="me"><td>-</td><td>${escapeHtml(userName||'Vos')}</td><td>${totalPoints}</td></tr>`; } else { note.textContent = 'Ranking global en vivo entre todos los que estén jugando ahora mismo.'; } } function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); } /* ========================================================= JUEGO 1 — TEST DE PERSONALIDAD (plantel actual de Boca) ========================================================== */ const players = [ { name:"Agustín Marchesín", number:1, pos:"ARQUERO", tags:["lider","tranquilo","veterano"], desc:"Sos el que pone paz en el grupo. Bajo presión, más tranquilo. Todos confían en vos cuando el ambiente se pone denso." }, { name:"Leandro Brey", number:12, pos:"ARQUERO", tags:["joven","tranquilo"], desc:"Sos la nueva promesa de tu círculo: todavía no la rompiste del todo pero se nota que te llega el momento." }, { name:"Javier García", number:13, pos:"ARQUERO", tags:["veterano","tranquilo","lider"], desc:"Sos el sabio del grupo, el que ya vio de todo y no se sorprende con nada. Das consejos aunque no te los pidan." }, { name:"Lautaro Di Lollo", number:2, pos:"DEFENSOR", tags:["joven","guerrero"], desc:"Sos de los que se tiran de cabeza a cualquier quilombo con tal de resolverlo. Entrega total." }, { name:"Lautaro Blanco", number:3, pos:"DEFENSOR", tags:["gambeta","carisma"], desc:"Sos el que sube por afuera cuando nadie lo espera. Aparecés con un chiste justo a tiempo." }, { name:"Nicolás Figal", number:4, pos:"DEFENSOR", tags:["veterano","lider","guerrero"], desc:"Sos el que pone el cuerpo por los demás sin pedir nada a cambio." }, { name:"Ayrton Costa", number:32, pos:"DEFENSOR", tags:["guerrero","loco"], desc:"Sos pura pasión y algo de descontrol. Te la jugás entera aunque a veces se te vaya la mano." }, { name:"Marco Pellegrino", number:26, pos:"DEFENSOR", tags:["tactico","joven"], desc:"Sos el que piensa dos pasos antes que el resto. Tenés un plan para todo." }, { name:"Juan Barinaga", number:24, pos:"DEFENSOR", tags:["joven","gambeta"], desc:"Sos el que se anima a probar cosas nuevas sin miedo al ridículo." }, { name:"Marcelo Weigandt", number:23, pos:"DEFENSOR", tags:["carisma","gambeta"], desc:"Sos el alma de cualquier junta. Sos el que nunca se queda quieto." }, { name:"Malcom Braida", number:27, pos:"DEF/MED", tags:["veterano","guerrero"], desc:"Sos versátil: te adaptás a lo que haga falta. El comodín confiable de siempre." }, { name:"Leandro Paredes", number:5, pos:"MEDIOCAMPISTA", tags:["lider","tactico","veterano","campeon"], desc:"Sos el que maneja los tiempos, con la tranquilidad de quien ya ganó algo importante y no necesita demostrar nada." }, { name:"Rodrigo Battaglia", number:6, pos:"MEDIOCAMPISTA", tags:["veterano","tactico","guerrero"], desc:"Sos el que corta todos los problemas antes de que exploten." }, { name:"Santiago Ascacíbar", number:25, pos:"MEDIOCAMPISTA", tags:["loco","guerrero","carisma"], desc:"Sos intensidad pura las 24 horas. No hay término medio." }, { name:"William Alarcón", number:15, pos:"MEDIOCAMPISTA", tags:["tactico","tranquilo"], desc:"Sos el que ordena sin hacer ruido. El equilibrio silencioso de cualquier plan." }, { name:"Milton Delgado", number:18, pos:"MEDIOCAMPISTA", tags:["joven","gambeta"], desc:"Tenés más confianza que experiencia, y por eso te salen cosas que a otros no." }, { name:"Tomás Belmonte", number:30, pos:"MEDIOCAMPISTA", tags:["tactico","tranquilo"], desc:"Sos el que labura calladito, sin figurear. Imprescindible y subestimado." }, { name:"Carlos Palacios", number:20, pos:"MED/EXTREMO", tags:["gambeta","loco","carisma"], desc:"Sos puro talento impredecible. Ahí está la gracia." }, { name:"Adam Bareiro", number:28, pos:"DELANTERO", tags:["goleador","guerrero"], desc:"Sos el que aparece justo cuando hace falta resolver algo, aunque no seas el más vistoso." }, { name:"Facundo Herrera", number:42, pos:"DEFENSOR", tags:["joven","guerrero"], desc:"Sos el más nuevo que ya se ganó el respeto a fuerza de laburo y entrega." } ]; const questions = [ { q:"Se corta la luz en medio de un asado familiar. ¿Qué hacés?", options:[ { t:"Agarro el celu y hago de linterna para que el asador no la pifie", tags:["tactico","lider"] }, { t:"Sigo comiendo en la oscuridad como si nada", tags:["tranquilo","veterano"] }, { t:"Salgo corriendo a buscar velas antes que nadie se dé cuenta", tags:["guerrero","joven"] }, { t:"Aprovecho la oscuridad para robarme el último choripán", tags:["loco","carisma"] } ] }, { q:"Encontrás una araña gigante en tu pieza a las 3 de la mañana. Tu reacción:", options:[ { t:"La encaro con un vaso y una revista, operación militar", tags:["guerrero","tactico"] }, { t:"Grito, despierto a toda la casa y pido refuerzos", tags:["carisma","loco"] }, { t:"La miro, respiro hondo y me voy a dormir a otro lado sin drama", tags:["tranquilo","veterano"] }, { t:"Le saco una foto para el grupo antes de hacer cualquier cosa", tags:["joven","gambeta"] } ] }, { q:"Si fueras un corte de asado, ¿cuál serías?", options:[ { t:"Vacío: sabroso, pero hay que saber cocinarme", tags:["carisma","gambeta"] }, { t:"Asado de tira: clásico, nunca falla, todos me quieren", tags:["lider","veterano"] }, { t:"Chinchulín: raro, discutido, pero al que lo banca lo banca fuerte", tags:["loco","carisma"] }, { t:"Bife de chorizo: directo, sin vueltas, cumplo siempre", tags:["guerrero","tactico"] } ] }, { q:"Se cae el wifi en el momento exacto del gol del equipo. ¿Qué hacés?", options:[ { t:"Reviso el router como si fuera cirujano, con calma y método", tags:["tactico","tranquilo"] }, { t:"Golpeo la pared y grito improperios al proveedor de internet", tags:["loco","guerrero"] }, { t:"Llamo a todo el grupo para que alguien me cuente qué pasó", tags:["carisma","joven"] }, { t:"Ya me acostumbré, ni me inmuto, total ya vi mil finales así", tags:["veterano","lider"] } ] }, { q:"Ganás la lotería. Primera decisión:", options:[ { t:"Invierto todo con un plan armado a 10 años", tags:["tactico","veterano"] }, { t:"Organizo un asado gigante para todos mis conocidos", tags:["carisma","lider"] }, { t:"Me compro algo totalmente absurdo que nadie esperaba", tags:["loco","gambeta"] }, { t:"Sigo laburando igual, no cambia nada en mi vida", tags:["tranquilo","guerrero"] } ] }, { q:"Estás en la cola del banco hace 40 minutos. ¿Cómo reaccionás?", options:[ { t:"Trabo amistad con el de adelante como si nos conociéramos de toda la vida", tags:["carisma","joven"] }, { t:"Calculo mentalmente cuánto tiempo perdí en la vida haciendo colas", tags:["tactico","veterano"] }, { t:"Empiezo a putear bajito pero no me voy ni loco", tags:["loco","guerrero"] }, { t:"Espero con total tranquilidad, ya sé cómo es esto", tags:["tranquilo","lider"] } ] }, { q:"Te toca elegir la música en un viaje largo en auto. ¿Qué ponés?", options:[ { t:"Una lista armada con anticipación, un tema para cada tramo", tags:["tactico","veterano"] }, { t:"Lo que pinte, cambio de género cada dos canciones", tags:["loco","gambeta"] }, { t:"Los clásicos de siempre que le gustan a todos", tags:["lider","carisma"] }, { t:"Algo under que nadie conoce, después lo escuchan todos", tags:["joven","gambeta"] } ] }, { q:"En un picadito con amigos, ¿qué rol tomás sin que nadie te lo pida?", options:[ { t:"El que arma los equipos y pone las reglas del partido", tags:["lider","tactico"] }, { t:"El que corre todo el partido aunque esté perdido 8 a 0", tags:["guerrero","joven"] }, { t:"El que hace jueguito en el arco esperando que le pasen la pelota", tags:["carisma","gambeta"] }, { t:"El que discute cada fallo del arbitro imaginario", tags:["loco","veterano"] } ] }, { q:"Tu excusa favorita para llegar tarde a cualquier lado:", options:[ { t:"Se me hizo largo el mate de la mañana", tags:["tranquilo","carisma"] }, { t:"No doy excusas, llego y listo, que se banquen", tags:["veterano","lider"] }, { t:"Una historia tan increíble que nadie la puede creer", tags:["loco","gambeta"] }, { t:"Llegué antes pero me quedé esperando afuera por las dudas", tags:["tactico","joven"] } ] }, { q:"Si tuvieras que pelear contra un pato del tamaño de un caballo o cien patos normales, ¿qué elegís?", options:[ { t:"El pato gigante, prefiero un solo enemigo grande y de frente", tags:["guerrero","lider"] }, { t:"Los cien patos, con estrategia y espalda los voy liquidando de a poco", tags:["tactico","veterano"] }, { t:"Ninguno, negocio la paz con los patos", tags:["tranquilo","carisma"] }, { t:"Cualquiera, me tiro de cabeza sin pensarlo ni un segundo", tags:["loco","joven"] } ] }, { q:"Tu suegra (o la de tu pareja) te hace un comentario picante en la mesa. ¿Qué hacés?", options:[ { t:"Le devuelvo el chiste con más filo todavía, con una sonrisa", tags:["carisma","loco"] }, { t:"Cambio de tema con una habilidad digna de diplomático", tags:["tactico","tranquilo"] }, { t:"Me quedo en silencio, ya libro esa batalla hace rato", tags:["veterano","guerrero"] }, { t:"Busco apoyo con la mirada al resto de la mesa", tags:["joven","lider"] } ] }, { q:"Elegís tu arma para sobrevivir un apocalipsis zombie:", options:[ { t:"Un plan de escape armado con anticipación y varias rutas alternativas", tags:["tactico","veterano"] }, { t:"Lo primero que encuentro, ya vemos sobre la marcha", tags:["loco","guerrero"] }, { t:"Organizo un grupo de supervivientes y me pongo al frente", tags:["lider","carisma"] }, { t:"Me escondo bien escondido y espero que pase todo tranquilo", tags:["tranquilo","joven"] } ] }, { q:"¿Qué tipo de mate sos?", options:[ { t:"Mate lavado, tranqui, para toda la charla larga sin apuro", tags:["tranquilo","veterano"] }, { t:"Mate quemado y amargo, directo al grano, sin vueltas", tags:["guerrero","lider"] }, { t:"Mate cocido con mucho azúcar, dulce con todos", tags:["carisma","joven"] }, { t:"Mate con yuyos raros que nadie pidió pero después le gusta a todos", tags:["loco","gambeta"] } ] }, { q:"Aterriza un OVNI en tu barrio. ¿Cuál es tu primer movimiento?", options:[ { t:"Grabo todo con el celular para el noticiero antes que nadie", tags:["joven","gambeta"] }, { t:"Organizo a los vecinos para investigar juntos, en equipo", tags:["lider","tactico"] }, { t:"Me acerco tranquilo a saludar, total ya vi de todo en la vida", tags:["veterano","tranquilo"] }, { t:"Le grito cosas al OVNI para que se note que no tengo miedo", tags:["loco","carisma"] } ] }, { q:"Última pregunta: te ofrecen un solo deseo. ¿Qué pedís?", options:[ { t:"Ganar un título grande junto a la gente que quiero", tags:["campeon","lider"] }, { t:"Que nunca se termine una buena juntada con amigos", tags:["carisma","gambeta"] }, { t:"Poder resolver cualquier drama con total calma, para siempre", tags:["tranquilo","tactico"] }, { t:"Tener la energía de los 20 años toda la vida", tags:["joven","guerrero"] } ] } ]; let current = 0; const scores = {}; function startQuiz(){ current = 0; for(const k in scores) delete scores[k]; showScreen('screen-test-quiz'); renderQuestion(); } function renderQuestion(){ const total = questions.length; const item = questions[current]; document.getElementById("q-counter").textContent = `PREGUNTA ${current+1}/${total}`; document.getElementById("progress-fill").style.width = `${((current+1)/total)*100}%`; document.getElementById("q-text").textContent = item.q; const wrap = document.getElementById("q-options"); wrap.innerHTML = ""; item.options.forEach(opt => { const btn = document.createElement("button"); btn.className = "opt"; btn.textContent = opt.t; btn.onclick = () => answer(opt.tags); wrap.appendChild(btn); }); } function answer(tags){ tags.forEach(t => { scores[t] = (scores[t] || 0) + 1; }); current++; if(current < questions.length) renderQuestion(); else showResult(); } function showResult(){ const ranked = players.map(p => ({ p, s: p.tags.reduce((acc,t) => acc + (scores[t]||0), 0) })); ranked.sort((a,b) => b.s - a.s); const top = ranked[0].s; const contenders = ranked.filter(r => r.s === top); const winner = contenders[Math.floor(Math.random()*contenders.length)].p; document.getElementById("r-number").textContent = winner.number; document.getElementById("r-name").textContent = winner.name; document.getElementById("r-pos").textContent = winner.pos; document.getElementById("r-desc").textContent = winner.desc; showScreen('screen-test-result'); sumarPuntos('personalidad', 10); } /* ========================================================= DATOS COMPARTIDOS — LEYENDAS HISTÓRICAS DE BOCA (usadas en Adivinanza, Armá el equipo y Trivia) ========================================================== */ const legends = [ { name:"Juan Román Riquelme", aliases:["riquelme","roman riquelme"], nat:"Argentina", pos:"Mediocampista", years:"1996-2002 y 2007-2014", club:"Barcelona / Villarreal" }, { name:"Martín Palermo", aliases:["palermo","titan"], nat:"Argentina", pos:"Delantero", years:"1997-2004 y 2010-2011", club:"Villarreal / Estudiantes" }, { name:"Carlos Tevez", aliases:["tevez","carlitos","apache"], nat:"Argentina", pos:"Delantero", years:"2001-2004, 2015-2017 y 2018-2021", club:"Corinthians / Manchester United" }, { name:"Guillermo Barros Schelotto", aliases:["barros schelotto","mellizo"], nat:"Argentina", pos:"Delantero/Volante", years:"1997-2007 (con paso por el fútbol turco)", club:"Galatasaray / LA Galaxy" }, { name:"Fernando Gago", aliases:["gago","pintita"], nat:"Argentina", pos:"Mediocampista", years:"2005-2007 y 2011-2015", club:"Real Madrid / Valencia" }, { name:"Sebastián Battaglia", aliases:["battaglia"], nat:"Argentina", pos:"Mediocampista", years:"1998-2008", club:"Villarreal" }, { name:"Rolando Schiavi", aliases:["schiavi"], nat:"Argentina", pos:"Defensor", years:"2003-2007 y 2009-2014", club:"Newell's / Vasco da Gama" }, { name:"Rodrigo Palacio", aliases:["palacio","trapito"], nat:"Argentina", pos:"Delantero", years:"2005-2012", club:"Genoa / Inter" }, { name:"Óscar Córdoba", aliases:["cordoba","oscar cordoba"], nat:"Colombia", pos:"Arquero", years:"1996-2000", club:"América de Cali / Newcastle" }, { name:"Walter Samuel", aliases:["samuel","hombre bionico"], nat:"Argentina", pos:"Defensor", years:"1998-2000", club:"Roma / Inter" }, { name:"Diego Maradona", aliases:["maradona","pelusa","el diez"], nat:"Argentina", pos:"Delantero", years:"1981 y 1995-1997", club:"Barcelona / Napoli" }, { name:"Hugo Gatti", aliases:["gatti","el loco gatti"], nat:"Argentina", pos:"Arquero", years:"1976-1988 (aprox.)", club:"River Plate" }, { name:"Antonio Rattín", aliases:["rattin"], nat:"Argentina", pos:"Defensor/Mediocampista", years:"1956-1970 (aprox.)", club:"Formado en el club" }, { name:"Diego Latorre", aliases:["latorre","pipo latorre"], nat:"Argentina", pos:"Delantero", years:"1988-1995", club:"Fiorentina" } ]; function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); } /* ========================================================= JUEGO 2 — ¿QUIÉN ES EL JUGADOR? (adivinanza con pistas) ========================================================== */ let guessTarget=null, guessHintsUsed=0, guessTriesLeft=5; function startGuessGame(){ guessTarget = legends[Math.floor(Math.random()*legends.length)]; guessHintsUsed = 0; guessTriesLeft = 5; document.getElementById('guess-avatar').classList.remove('revealed'); document.getElementById('guess-avatar-init').textContent = '?'; document.getElementById('guess-feedback').textContent = ''; document.getElementById('guess-feedback').className = 'feedback'; document.getElementById('guess-input').value = ''; document.getElementById('guess-hints-list').innerHTML = ''; document.querySelectorAll('.hint-btn').forEach(b => b.disabled = false); document.getElementById('guess-tries').textContent = guessTriesLeft; document.getElementById('guess-result-card').classList.add('hidden'); showScreen('screen-guess'); } function pedirPista(tipo, btn){ if(guessHintsUsed >= 4) return; guessHintsUsed++; btn.disabled = true; let texto = ''; if(tipo==='pos') texto = `⚽ Posición: ${guessTarget.pos}`; if(tipo==='nat') texto = `🌎 Nacionalidad: ${guessTarget.nat}`; if(tipo==='years') texto = `🔵🟡 Jugó en Boca: ${guessTarget.years}`; if(tipo==='club') texto = `🔁 Pasó por: ${guessTarget.club}`; const div = document.createElement('div'); div.textContent = texto; div.style.cssText = 'font-size:12.5px;color:#dbe3f5;margin-bottom:4px;'; document.getElementById('guess-hints-list').appendChild(div); } function intentarAdivinar(){ const val = normalize(document.getElementById('guess-input').value); if(!val) return; const ok = guessTarget.aliases.some(a => normalize(a)===val) || normalize(guessTarget.name)===val; const fb = document.getElementById('guess-feedback'); if(ok){ revealGuess(true); } else { guessTriesLeft--; document.getElementById('guess-tries').textContent = guessTriesLeft; if(guessTriesLeft <= 0){ revealGuess(false); } else { fb.textContent = 'No es... ¡probá de nuevo o pedí una pista!'; fb.className = 'feedback bad'; } } } function revealGuess(success){ document.getElementById('guess-avatar').classList.add('revealed'); document.getElementById('guess-avatar-init').textContent = guessTarget.name.split(' ').map(w=>w[0]).slice(0,2).join(''); const card = document.getElementById('guess-result-card'); card.classList.remove('hidden'); const tabla = [100,75,50,25,0]; const pts = success ? tabla[Math.min(guessHintsUsed,4)] : 0; card.innerHTML = `<b>${guessTarget.name}</b><br>${guessTarget.nat} · ${guessTarget.pos}<br>En Boca: ${guessTarget.years}<br><br>${success ? '✅ ¡Acertaste! +'+pts+' pts' : '❌ Se te acabaron los intentos'}`; const fb = document.getElementById('guess-feedback'); fb.textContent = success ? '¡Bien ahí!' : `Era ${guessTarget.name}`; fb.className = 'feedback ' + (success ? 'ok' : 'bad'); if(pts > 0) sumarPuntos('adivinanza', pts); } /* ========================================================= JUEGO 3 — PENAL XENEIZE ========================================================== */ let penalState = null, powerAnim = null, powerPos = 0, powerDir = 1; function startPenales(){ penalState = { round:1, boca:0, river:0, phase:'boca', dir:null, suddenDeath:false, points:0 }; document.getElementById('penal-log').innerHTML = ''; document.getElementById('penal-result').classList.add('hidden'); updatePenalScore(); renderPenalTurn(); showScreen('screen-penal'); } function updatePenalScore(){ document.getElementById('penal-score').textContent = `BOCA ${penalState.boca} - ${penalState.river} RIVER`; document.getElementById('penal-round').textContent = penalState.suddenDeath ? 'Muerte súbita' : `Ronda ${penalState.round}/5`; } function renderPenalTurn(){ document.getElementById('penal-turn').textContent = penalState.phase==='boca' ? '🔵🟡 Pateás vos' : '⚪🔴 Patea River (automático)'; document.getElementById('penal-dirs').style.display = penalState.phase==='boca' ? 'grid' : 'none'; document.getElementById('penal-power-wrap').classList.add('hidden'); document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('sel')); penalState.dir = null; document.getElementById('kick-result').textContent = ''; if(penalState.phase==='river') setTimeout(riverKick, 900); } function chooseDir(dir, btn){ penalState.dir = dir; document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); document.getElementById('penal-power-wrap').classList.remove('hidden'); startPowerBar(); } function startPowerBar(){ powerPos = 0; powerDir = 1; cancelAnimationFrame(powerAnim); const marker = document.getElementById('power-marker'); function step(){ powerPos += powerDir*2.2; if(powerPos>=100){ powerPos=100; powerDir=-1; } if(powerPos<=0){ powerPos=0; powerDir=1; } marker.style.left = powerPos + '%'; powerAnim = requestAnimationFrame(step); } step(); } function golpearBoca(){ cancelAnimationFrame(powerAnim); const power = powerPos; const dist = Math.abs(power-50); const quality = dist<8 ? 'perfecta' : dist<20 ? 'buena' : 'mala'; const keeperDir = ['arriba-izq','izq','centro','derecha','arriba-der'][Math.floor(Math.random()*5)]; let resultado; if(quality==='mala' && Math.random()<0.30) resultado='afuera'; else if(quality==='mala' && Math.random()<0.15) resultado='palo'; else if(keeperDir===penalState.dir && quality!=='perfecta') resultado='atajado'; else if(keeperDir===penalState.dir && quality==='perfecta' && Math.random()<0.35) resultado='atajado'; else resultado='gol'; mostrarResultadoPenal(resultado, true); } function riverKick(){ const make = Math.random() < 0.72; mostrarResultadoPenal(make ? 'gol' : (Math.random()<0.5 ? 'atajado' : 'afuera'), false); } function mostrarResultadoPenal(resultado, esBoca){ const iconos = { gol:'⚽🔥', atajado:'🧤', afuera:'😭', palo:'😱' }; document.getElementById('kick-result').textContent = iconos[resultado]; const log = document.getElementById('penal-log'); const entry = document.createElement('div'); entry.style.cssText = 'color:#c9d4ea;margin-bottom:3px;'; entry.textContent = (esBoca ? '🔵 Vos: ' : '⚪ River: ') + resultado.toUpperCase(); log.prepend(entry); if(resultado==='gol'){ if(esBoca){ penalState.boca++; penalState.points += 20; } else { penalState.river++; } } updatePenalScore(); setTimeout(nextPenalStep, 1200); } function nextPenalStep(){ if(!penalState.suddenDeath){ if(penalState.phase==='boca'){ penalState.phase='river'; renderPenalTurn(); return; } penalState.round++; if(penalState.round>5){ if(penalState.boca===penalState.river){ penalState.suddenDeath=true; penalState.round=1; } else return endPenales(); } penalState.phase='boca'; renderPenalTurn(); } else { if(penalState.phase==='boca'){ penalState.phase='river'; renderPenalTurn(); return; } if(penalState.boca!==penalState.river) return endPenales(); penalState.phase='boca'; renderPenalTurn(); } } function endPenales(){ const gano = penalState.boca > penalState.river; document.getElementById('penal-result').classList.remove('hidden'); document.getElementById('penal-result').innerHTML = `<b>${gano ? '🏆 ¡GANASTE LA TANDA!' : '😭 Perdiste la tanda'}</b><br>${penalState.points} puntos por tus goles convertidos`; document.getElementById('penal-turn').textContent = 'Tanda terminada'; document.getElementById('penal-dirs').style.display = 'none'; document.getElementById('penal-power-wrap').classList.add('hidden'); sumarPuntos('penales', penalState.points + (gano ? 30 : 0)); } /* ========================================================= JUEGO 4 — ARMÁ EL BOCA HISTÓRICO ========================================================== */ const formationSlots = [ { id:'ei', label:'EI', row:1 }, { id:'dc', label:'DC', row:1 }, { id:'ed', label:'ED', row:1 }, { id:'mc1', label:'MC', row:2 }, { id:'mc2', label:'MC', row:2 }, { id:'mc3', label:'MC', row:2 }, { id:'li', label:'LI', row:3 }, { id:'dfc1', label:'DFC', row:3 }, { id:'dfc2', label:'DFC', row:3 }, { id:'ld', label:'LD', row:3 }, { id:'arq', label:'ARQ', row:4 } ]; let teamAssign = {}, selectedPlayerForTeam = null; function startTeamBuilder(){ teamAssign = {}; selectedPlayerForTeam = null; renderPitch(); renderRoster(); populateTeamSelects(); document.getElementById('team-summary').classList.add('hidden'); showScreen('screen-team'); } function renderPitch(){ const pitch = document.getElementById('pitch'); pitch.innerHTML = ''; [1,2,3,4].forEach(r => { const rowDiv = document.createElement('div'); rowDiv.className = 'pitch-row'; formationSlots.filter(s => s.row===r).forEach(s => { const slot = document.createElement('div'); slot.className = 'slot' + (teamAssign[s.id] ? ' filled' : ''); slot.textContent = teamAssign[s.id] ? shortName(teamAssign[s.id]) : s.label; slot.onclick = () => onSlotClick(s.id); rowDiv.appendChild(slot); }); pitch.appendChild(rowDiv); }); } function shortName(full){ const parts = full.split(' '); return parts[parts.length-1]; } function renderRoster(){ const roster = document.getElementById('roster'); const usedNames = Object.values(teamAssign); roster.innerHTML = ''; legends.forEach(p => { const card = document.createElement('button'); card.className = 'player-card' + (usedNames.includes(p.name) ? ' used' : '') + (selectedPlayerForTeam===p.name ? ' sel' : ''); card.textContent = p.name; card.onclick = () => { selectedPlayerForTeam = p.name; renderRoster(); }; roster.appendChild(card); }); } function onSlotClick(slotId){ if(teamAssign[slotId]){ delete teamAssign[slotId]; renderPitch(); renderRoster(); return; } if(!selectedPlayerForTeam) return; teamAssign[slotId] = selectedPlayerForTeam; selectedPlayerForTeam = null; renderPitch(); renderRoster(); } function populateTeamSelects(){ const opts = '<option value="">-- Elegir --</option>' + legends.map(p => `<option value="${p.name}">${p.name}</option>`).join(''); document.getElementById('team-cap').innerHTML = opts; document.getElementById('team-idolo').innerHTML = opts; } function finalizarEquipo(){ const filled = Object.keys(teamAssign).length; const cap = document.getElementById('team-cap').value; const idolo = document.getElementById('team-idolo').value; const box = document.getElementById('team-summary'); box.classList.remove('hidden'); box.innerHTML = `<b>🔵🟡 TU BOCA HISTÓRICO 🟡🔵</b><br>Formación: 1-4-3-3 (${filled}/11 lugares llenos)` + (cap ? `<br>Capitán: ${cap}` : '') + (idolo ? `<br>Ídolo elegido: ${idolo}` : ''); sumarPuntos('equipo', filled*5 + (filled===11 ? 30 : 0)); } /* ========================================================= JUEGO 5 — MEMOTEST XENEIZE ========================================================== */ const memoSymbols = ['🛡️','🏟️','🐐','🎯','💪','🏆','🌍','👕','⭐','🔥','🥅','📯']; let memoState = null; function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; } function startMemo(dificultad){ const pairsCount = dificultad==='facil' ? 4 : dificultad==='medio' ? 8 : 12; const symbols = memoSymbols.slice(0, pairsCount); let deck = shuffle([...symbols, ...symbols].map(s => ({ s, flipped:false, matched:false }))); if(memoState && memoState.timer) clearInterval(memoState.timer); memoState = { deck, first:null, second:null, moves:0, matches:0, pairsCount, lock:false, seconds:0, timer:null }; memoState.timer = setInterval(() => { memoState.seconds++; updateMemoStats(); }, 1000); renderMemo(); updateMemoStats(); document.getElementById('memo-result').classList.add('hidden'); showScreen('screen-memo'); } function renderMemo(){ const grid = document.getElementById('memo-grid'); const cols = memoState.pairsCount<=4 ? 4 : memoState.pairsCount<=8 ? 4 : 6; grid.style.gridTemplateColumns = `repeat(${cols},1fr)`; grid.innerHTML = ''; memoState.deck.forEach((c,i) => { const el = document.createElement('div'); el.className = 'memo-card' + (c.flipped||c.matched ? ' flipped' : '') + (c.matched ? ' matched' : ''); el.textContent = (c.flipped||c.matched) ? c.s : '❓'; el.onclick = () => flipCard(i); grid.appendChild(el); }); } function flipCard(i){ if(memoState.lock) return; const c = memoState.deck[i]; if(c.flipped || c.matched) return; c.flipped = true; if(memoState.first===null){ memoState.first=i; renderMemo(); return; } memoState.second = i; memoState.moves++; renderMemo(); memoState.lock = true; setTimeout(() => { const a = memoState.deck[memoState.first], b = memoState.deck[memoState.second]; if(a.s===b.s){ a.matched=true; b.matched=true; memoState.matches++; } else { a.flipped=false; b.flipped=false; } memoState.first=null; memoState.second=null; memoState.lock=false; renderMemo(); updateMemoStats(); if(memoState.matches===memoState.pairsCount) finishMemo(); }, 700); } function updateMemoStats(){ const m = Math.floor(memoState.seconds/60), s = memoState.seconds%60; document.getElementById('memo-time').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; document.getElementById('memo-moves').textContent = memoState.moves; document.getElementById('memo-pairs').textContent = `${memoState.matches}/${memoState.pairsCount}`; } function finishMemo(){ clearInterval(memoState.timer); const pts = Math.max(20, 250 - memoState.moves*3 - memoState.seconds); document.getElementById('memo-result').classList.remove('hidden'); document.getElementById('memo-result').innerHTML = `<b>🏆 ¡Completaste el desafío!</b><br>Tiempo: ${document.getElementById('memo-time').textContent} · Movimientos: ${memoState.moves}<br>+${pts} puntos`; sumarPuntos('memotest', pts); } /* ========================================================= JUEGO 6 — ¿DE QUÉ JUGADOR ES ESTO? ========================================================== */ const triviaQuestions = [ { frase:"Erró un penal clave en una final ante Real Madrid en el año 2000, y meses después se sacó esa espina siendo goleador en el Mundial de Clubes.", options:["Martín Palermo","Carlos Tevez","Juan Román Riquelme","Guillermo Barros Schelotto"], correct:0, ctx:"Fue Martín Palermo, que se lo hizo perdonar con creces poco después de esa final." }, { frase:"Se hizo famoso por pararse la pelota, mirar al rival a los ojos y avisar por dónde iba a jugar, y aun así no se la podían sacar.", options:["Carlos Tevez","Juan Román Riquelme","Fernando Gago","Sebastián Battaglia"], correct:1, ctx:"Es una marca registrada del juego de Juan Román Riquelme." }, { frase:"Salió campeón de América con Boca a comienzos de los 2000 y después brilló en el Manchester United y el Manchester City.", options:["Rodrigo Palacio","Diego Latorre","Carlos Tevez","Walter Samuel"], correct:2, ctx:"Carlos Tevez tuvo un paso enorme por el fútbol inglés después de su primera etapa en Boca." }, { frase:"Formó una dupla goleadora histórica con Martín Palermo a comienzos de los 2000.", options:["Guillermo Barros Schelotto","Rolando Schiavi","Óscar Córdoba","Antonio Rattín"], correct:0, ctx:"Barros Schelotto y Palermo fueron una sociedad ofensiva clave en esa época dorada." }, { frase:"Fue capitán y símbolo de la defensa boquense durante buena parte de los 2000 y 2010.", options:["Walter Samuel","Rolando Schiavi","Hugo Gatti","Diego Maradona"], correct:1, ctx:"Rolando Schiavi fue referente defensivo y capitán en dos etapas distintas en el club." }, { frase:"Volvió a Boca después de una lesión de rodilla muy grave y terminó saliendo campeón de la Copa Libertadores en 2007.", options:["Sebastián Battaglia","Fernando Gago","Rodrigo Palacio","Carlos Tevez"], correct:1, ctx:"Fernando Gago recompuso su carrera en Boca tras una lesión durísima." }, { frase:"Fue arquero titular en las primeras Copas Libertadores que ganó Boca en la era dorada de comienzos de los 2000.", options:["Hugo Gatti","Óscar Córdoba","Antonio Rattín","Diego Latorre"], correct:1, ctx:"El colombiano Óscar Córdoba atajó en esos títulos internacionales del club." }, { frase:"Jugó apenas un puñado de partidos en Boca a comienzos de los 80, pero volvió a mediados de los 90 para el recuerdo eterno de todo el mundo.", options:["Diego Maradona","Carlos Tevez","Martín Palermo","Fernando Gago"], correct:0, ctx:"Diego Maradona tuvo dos pasos por Boca, separados por más de una década." }, { frase:"Fue famoso por sus atajadas espectaculares y por su personalidad extrovertida en los años 70 y 80.", options:["Óscar Córdoba","Hugo Gatti","Walter Samuel","Rolando Schiavi"], correct:1, ctx:"Hugo 'el Loco' Gatti es uno de los arqueros más recordados del fútbol argentino." }, { frase:"Fue capitán en los años 60 y protagonista de un episodio muy recordado en un Mundial jugando para la selección.", options:["Antonio Rattín","Diego Latorre","Sebastián Battaglia","Rodrigo Palacio"], correct:0, ctx:"Antonio Rattín es una de las figuras históricas más recordadas del club." } ]; let triviaIndex = 0, triviaScore = 0; function startTrivia(){ triviaIndex = 0; triviaScore = 0; document.getElementById('trivia-result').classList.add('hidden'); renderTriviaQ(); showScreen('screen-trivia'); } function renderTriviaQ(){ const q = triviaQuestions[triviaIndex]; document.getElementById('trivia-counter').textContent = `Pregunta ${triviaIndex+1}/10`; document.getElementById('trivia-frase').textContent = '"' + q.frase + '"'; document.getElementById('trivia-feedback').textContent = ''; const wrap = document.getElementById('trivia-options'); wrap.innerHTML = ''; q.options.forEach((opt,i) => { const b = document.createElement('button'); b.className = 'opt'; b.textContent = (i%2===0 ? '🔵 ' : '🟡 ') + opt; b.onclick = () => answerTrivia(i); wrap.appendChild(b); }); } function answerTrivia(i){ const q = triviaQuestions[triviaIndex]; document.querySelectorAll('#trivia-options .opt').forEach(o => o.style.pointerEvents = 'none'); const fb = document.getElementById('trivia-feedback'); if(i===q.correct){ triviaScore++; fb.textContent = '✅ Correcto. ' + q.ctx; fb.className = 'feedback ok'; } else { fb.textContent = '❌ Era ' + q.options[q.correct] + '. ' + q.ctx; fb.className = 'feedback bad'; } setTimeout(() => { triviaIndex++; if(triviaIndex < triviaQuestions.length) renderTriviaQ(); else finishTrivia(); }, 2000); } function finishTrivia(){ const stars = '⭐'.repeat(Math.max(1, Math.round(triviaScore/2))); const msg = triviaScore>=8 ? '¡Sos un verdadero Xeneize!' : triviaScore>=5 ? 'Bien, pero repasá un poco de historia azul y oro.' : 'Te falta cancha, che.'; document.getElementById('trivia-result').classList.remove('hidden'); document.getElementById('trivia-result').innerHTML = `<b>Resultado: ${triviaScore}/10</b><br>${stars}<br>${msg}`; sumarPuntos('trivia', triviaScore*15); } /* ========================================================= INICIO ========================================================== */ window.addEventListener('load', () => { updatePointsBadge(); if(userName){ document.getElementById('home-hello').textContent = 'Hola, ' + userName + '!'; showScreen('screen-home'); initFirebase(); } else { showScreen('screen-name'); } }); </script>
 
-  const wrap = document.getElementById("q-options");
-  wrap.innerHTML = "";
-  item.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.className = "opt";
-    btn.textContent = opt.t;
-    btn.onclick = () => answer(opt.tags);
-    wrap.appendChild(btn);
-  });
-}
-
-function answer(tags){
-  tags.forEach(t => { scores[t] = (scores[t] || 0) + 1; });
-  current++;
-  if (current < questions.length){
-    renderQuestion();
-  } else {
-    showResult();
-  }
-}
-
-function showResult(){
-  // calcular puntaje de cada jugador según sus tags
-  let best = null;
-  let bestScore = -1;
-  const ranked = players.map(p => {
-    const s = p.tags.reduce((acc,t) => acc + (scores[t] || 0), 0);
-    return { p, s };
-  });
-  ranked.sort((a,b) => b.s - a.s);
-  // desempate: entre los que están dentro de 1 punto del máximo, elegir aleatorio
-  const top = ranked[0].s;
-  const contenders = ranked.filter(r => r.s >= top - 0.001 && r.s === top);
-  const winner = contenders[Math.floor(Math.random()*contenders.length)].p;
-
-  document.getElementById("r-number").textContent = winner.number;
-  document.getElementById("r-name").textContent = winner.name;
-  document.getElementById("r-pos").textContent = winner.pos;
-  document.getElementById("r-desc").textContent = winner.desc;
-
-  document.getElementById("screen-quiz").classList.add("hidden");
-  document.getElementById("screen-result").classList.remove("hidden");
-}
-
-function restartQuiz(){
-  document.getElementById("screen-result").classList.add("hidden");
-  document.getElementById("screen-start").classList.remove("hidden");
-}
-</script>
-</body>
-</html>
+</body> </html> 
